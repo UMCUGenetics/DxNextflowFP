@@ -1,8 +1,8 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema",
-  "$id": "https://raw.githubusercontent.com/UMCUGenetics/WorkflowName/master/nextflow_schema.json",
-  "title": "UMCUGenetics/WorkflowName pipeline parameters",
-  "description": "UMCU Genetics RNA Workflow",
+  "$id": "https://raw.githubusercontent.com/UMCUGenetics/DxNextflowFP/master/nextflow_schema.json",
+  "title": "UMCUGenetics/DxNextflowFP pipeline parameters",
+  "description": "UMCU Genetics Fingerprint Workflow",
   "type": "object",
   "definitions": {
     "input_output_options": {

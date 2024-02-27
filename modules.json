@@ -1,6 +1,6 @@
 {
-  "name": "UMCUGenetics/WorkflowName",
-  "homePage": "https://github.com/UMCUGenetics/WorkflowName",
+  "name": "UMCUGenetics/DxNextflowFP",
+  "homePage": "https://github.com/UMCUGenetics/DxNextflowFP",
   "repos": {
     "https://github.com/nf-core/modules.git": {
       "modules": {
