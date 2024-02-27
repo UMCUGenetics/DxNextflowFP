@@ -1,0 +1,8 @@
+export_plots: true
+top_modules:
+  - "fastqc"
+report_section_order:
+  software_versions:
+    order: -1000
+  UMCUGenetics-WorkflowName-summary:
+    order: -1001
