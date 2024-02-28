@@ -31,6 +31,7 @@ include { BWAMEM2_MEM } from './modules/nf-core/bwamem2/mem/main'
 include { GATK4_HAPLOTYPECALLER } from './modules/nf-core/gatk4/haplotypecaller/main'
 include { GATK4_GENOTYPEGVCFS } from './modules/nf-core/gatk4/genotypegvcfs/main'
 include { SAMTOOLS_INDEX } from './modules/nf-core/samtools/index/main'
+include { SAMTOOLS_MERGE } from './modules/nf-core/samtools/merge/main'
 include { CUSTOM_DUMPSOFTWAREVERSIONS } from './modules/nf-core/custom/dumpsoftwareversions/main'
 
 /*
@@ -55,7 +56,8 @@ workflow {
 
     // Mapping
     BWAMEM2_MEM(ch_fastq, ch_bwa_index, true)
-    SAMTOOLS_INDEX(BWAMEM2_MEM.out.bam)
+    SAMTOOLS_MERGE(BWAMEM2_MEM.out.bam)
+    SAMTOOLS_INDEX(SAMTOOLS_MERGE.out.bam)
 
     ch_bam_bai = BWAMEM2_MEM.out.bam.join(SAMTOOLS_INDEX.out.bai)
 
@@ -84,6 +86,7 @@ workflow {
     ch_versions = channel.empty()
     ch_versions = ch_versions.mix(BWAMEM2_MEM.out.versions)
     ch_versions = ch_versions.mix(SAMTOOLS_INDEX.out.versions)
+    ch_versions = ch_versions.mix(SAMTOOLS_MERGE.out.versions)
     ch_versions = ch_versions.mix(GATK4_HAPLOTYPECALLER.out.versions)
     ch_versions = ch_versions.mix(GATK4_GENOTYPEGVCFS.out.versions)
     ch_versions = ch_versions.mix(FASTQC.out.versions)
