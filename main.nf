@@ -56,8 +56,20 @@ workflow {
 
     // Mapping
     BWAMEM2_MEM(ch_fastq, ch_bwa_index, true)
-    SAMTOOLS_MERGE(BWAMEM2_MEM.out.bam)
-    SAMTOOLS_INDEX(SAMTOOLS_MERGE.out.bam)
+
+    // Merge multiple lane samples and index
+    BWAMEM2_MEM.out.bam
+        .map{ meta, bam -> [ meta - meta.subMap('rg_id', 'flowcell'), bam ] }
+        .groupTuple().branch{
+            single: it[1].size() == 1
+            multiple: it[1].size() > 1
+            }
+        .set{ bams }
+ 
+    // If there are no samples to merge, skip the process
+    SAMTOOLS_MERGE ( bams.multiple, ch_genome_fasta, ch_genome_fasta_index)
+    prepared_bam = bams.single.mix(SAMTOOLS_MERGE.out.bam)
+    SAMTOOLS_INDEX(prepared_bam)
 
     ch_bam_bai = BWAMEM2_MEM.out.bam.join(SAMTOOLS_INDEX.out.bai)
 
