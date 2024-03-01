@@ -71,7 +71,7 @@ workflow {
     prepared_bam = bams.single.mix(SAMTOOLS_MERGE.out.bam)
     SAMTOOLS_INDEX(prepared_bam)
 
-    ch_bam_bai = BWAMEM2_MEM.out.bam.join(SAMTOOLS_INDEX.out.bai)
+    ch_bam_bai = prepared_bam.join(SAMTOOLS_INDEX.out.bai)
 
     // Variant calling
     GATK4_HAPLOTYPECALLER(
