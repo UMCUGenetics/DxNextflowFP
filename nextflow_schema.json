@@ -34,20 +34,6 @@
         }
       }
     },
-    "reference_genome_options": {
-      "title": "Reference genome options",
-      "type": "object",
-      "fa_icon": "fas fa-dna",
-      "description": "Reference genome related files and options required for the workflow.",
-      "properties": {
-        "genome": {
-          "type": "string",
-          "description": "Path of genome reference.",
-          "fa_icon": "fas fa-book",
-          "help_text": ""
-        }
-      }
-    },
     "generic_options": {
       "title": "Generic options",
       "type": "object",
@@ -65,7 +51,14 @@
           "description": "Method used to save pipeline results to output directory.",
           "help_text": "The Nextflow `publishDir` option specifies which intermediate files should be saved to the output directory. This option tells the pipeline what method should be used to move these files. See [Nextflow docs](https://www.nextflow.io/docs/latest/process.html#publishdir) for details.",
           "fa_icon": "fas fa-copy",
-          "enum": ["symlink", "rellink", "link", "copy", "copyNoFollow", "move"],
+          "enum": [
+            "symlink",
+            "rellink",
+            "link",
+            "copy",
+            "copyNoFollow",
+            "move"
+          ],
           "hidden": true
         }
       }
@@ -76,10 +69,29 @@
       "$ref": "#/definitions/input_output_options"
     },
     {
-      "$ref": "#/definitions/reference_genome_options"
-    },
-    {
       "$ref": "#/definitions/generic_options"
     }
-  ]
+  ],
+  "properties": {
+    "genome_fasta": {
+      "type": "string",
+      "default": "/hpc/diaggen/data/databases/ref_genomes/Homo_sapiens.GRCh37.GATK.illumina/Homo_sapiens.GRCh37.GATK.illumina.fasta"
+    },
+    "genome_dict": {
+      "type": "string",
+      "default": "/hpc/diaggen/data/databases/ref_genomes/Homo_sapiens.GRCh37.GATK.illumina/Homo_sapiens.GRCh37.GATK.illumina.dict"
+    },
+    "bwa_index": {
+      "type": "string",
+      "default": "/hpc/diaggen/projects/Fingerprint_Nimagen/bwa-mem2_index/Homo_sapiens.GRCh37.GATK.illumina"
+    },
+    "intervals": {
+      "type": "string",
+      "default": "/hpc/diaggen/projects/Fingerprint_Nimagen/Tracks/nimagen_hg19.interval_list"
+    },
+    "dbsnp": {
+      "type": "string",
+      "default": "//hpc/diaggen/data/databases/GATK_resource_bundle/b37/dbsnp_138.b37.vcf.gz"
+    }
+  }
 }
