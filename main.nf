@@ -31,9 +31,10 @@ include { BWAMEM2_MEM } from './modules/nf-core/bwamem2/mem/main'
 include { GATK4_HAPLOTYPECALLER } from './modules/nf-core/gatk4/haplotypecaller/main'
 include { GATK4_GENOTYPEGVCFS } from './modules/nf-core/gatk4/genotypegvcfs/main'
 include { SAMTOOLS_INDEX } from './modules/nf-core/samtools/index/main'
+include { SAMTOOLS_INDEX as SAMTOOLS_INDEX_UMITOOLS } from './modules/nf-core/samtools/index/main'
 include { SAMTOOLS_MERGE } from './modules/nf-core/samtools/merge/main'
 include { CUSTOM_DUMPSOFTWAREVERSIONS } from './modules/nf-core/custom/dumpsoftwareversions/main'
-include { UMITOOLS_DEDUP } from './modules/nf-core/umitools/dedup/main'
+include { UMITOOLS_DEDUP } from './modules/nf-core/umitools/dedup/main' 
 include { UMITOOLS_EXTRACT } from './modules/nf-core/umitools/extract/main'
 
 /*
@@ -53,15 +54,20 @@ workflow {
     ch_intervals = Channel.fromPath("${params.intervals}").collect()
 
 
+
+
     // Input channel
     ch_fastq = extractFastqPairFromDir(params.input, params.outdir)
+
+    //Extract UMIs
+    //UMITOOLS_EXTRACT(ch_fastq)
 
     // Mapping
     BWAMEM2_MEM(ch_fastq, ch_bwa_index, true)
 
     // Merge multiple lane samples and index
     BWAMEM2_MEM.out.bam
-        .map{ meta, bam -> [ meta - meta.subMap('rg_id', 'flowcell'), bam ] }
+        .map{ meta, bam -> [ meta - meta.subMap('rg_id', 'flowcell', 'single_end'), bam ] }
         .groupTuple().branch{
             single: it[1].size() == 1
             multiple: it[1].size() > 1
@@ -69,11 +75,16 @@ workflow {
         .set{ bams }
  
     // If there are no samples to merge, skip the process
-    SAMTOOLS_MERGE ( bams.multiple, ch_genome_fasta, ch_genome_fasta_index)
+    SAMTOOLS_MERGE(bams.multiple, ch_genome_fasta, ch_genome_fasta_index)
     prepared_bam = bams.single.mix(SAMTOOLS_MERGE.out.bam)
     SAMTOOLS_INDEX(prepared_bam)
 
     ch_bam_bai = prepared_bam.join(SAMTOOLS_INDEX.out.bai)
+
+    //UMI dedup
+    UMITOOLS_DEDUP(ch_bam_bai, true)
+    SAMTOOLS_INDEX_UMITOOLS(UMITOOLS_DEDUP.out.bam)
+    ch_bam_bai = UMITOOLS_DEDUP.out.bam.join(SAMTOOLS_INDEX_UMITOOLS.out.bai) 
 
     // Variant calling
     GATK4_HAPLOTYPECALLER(
@@ -104,6 +115,7 @@ workflow {
     ch_versions = ch_versions.mix(GATK4_HAPLOTYPECALLER.out.versions)
     ch_versions = ch_versions.mix(GATK4_GENOTYPEGVCFS.out.versions)
     ch_versions = ch_versions.mix(FASTQC.out.versions)
+    ch_versions = ch_versions.mix(UMITOOLS_DEDUP.out.versions)
     CUSTOM_DUMPSOFTWAREVERSIONS(ch_versions.unique().collectFile(name: 'collated_versions.yml'))
 
 
