@@ -60,11 +60,8 @@ workflow {
     // Trim FASTQs
     TRIMGALORE(ch_fastq)
 
-    //Extract UMIs
-    //UMITOOLS_EXTRACT(ch_fastq)
-
     // Mapping
-    BWAMEM2_MEM(ch_fastq, ch_bwa_index, true)
+    BWAMEM2_MEM(TRIMGALORE.out.reads, ch_bwa_index, true)
 
     // Merge multiple lane samples and index
     BWAMEM2_MEM.out.bam
