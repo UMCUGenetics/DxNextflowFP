@@ -35,8 +35,7 @@ include { SAMTOOLS_INDEX as SAMTOOLS_INDEX_UMITOOLS } from './modules/nf-core/sa
 include { SAMTOOLS_MERGE } from './modules/nf-core/samtools/merge/main'
 include { CUSTOM_DUMPSOFTWAREVERSIONS } from './modules/nf-core/custom/dumpsoftwareversions/main'
 include { UMITOOLS_DEDUP } from './modules/nf-core/umitools/dedup/main' 
-include { UMITOOLS_EXTRACT } from './modules/nf-core/umitools/extract/main'
-include { TRIMGALORE } from '../modules/nf-core/trimgalore/main'
+include { TRIMGALORE } from './modules/nf-core/trimgalore/main'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -55,10 +54,11 @@ workflow {
     ch_intervals = Channel.fromPath("${params.intervals}").collect()
 
 
-
-
     // Input channel
     ch_fastq = extractFastqPairFromDir(params.input, params.outdir)
+
+    // Trim FASTQs
+    TRIMGALORE(ch_fastq)
 
     //Extract UMIs
     //UMITOOLS_EXTRACT(ch_fastq)
@@ -68,7 +68,7 @@ workflow {
 
     // Merge multiple lane samples and index
     BWAMEM2_MEM.out.bam
-        .map{ meta, bam -> [ meta - meta.subMap('rg_id', 'flowcell', 'single_end'), bam ] }
+        .map{ meta, bam -> [ meta - meta.subMap('rg_id', 'flowcell'), bam ] }
         .groupTuple().branch{
             single: it[1].size() == 1
             multiple: it[1].size() > 1
