@@ -36,6 +36,7 @@ include { SAMTOOLS_MERGE } from './modules/nf-core/samtools/merge/main'
 include { CUSTOM_DUMPSOFTWAREVERSIONS } from './modules/nf-core/custom/dumpsoftwareversions/main'
 include { UMITOOLS_DEDUP } from './modules/nf-core/umitools/dedup/main' 
 include { UMITOOLS_EXTRACT } from './modules/nf-core/umitools/extract/main'
+include { TRIMGALORE } from '../modules/nf-core/trimgalore/main'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
