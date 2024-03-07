@@ -116,6 +116,8 @@ workflow {
     ch_versions = ch_versions.mix(GATK4_GENOTYPEGVCFS.out.versions)
     ch_versions = ch_versions.mix(FASTQC.out.versions)
     ch_versions = ch_versions.mix(UMITOOLS_DEDUP.out.versions)
+    ch_versions = ch_versions.mix(SAMTOOLS_INDEX_UMITOOLS.out.versions)
+    ch_versions = ch_versions.mix(UMITOOLS_DEDUP.out.versions)
     CUSTOM_DUMPSOFTWAREVERSIONS(ch_versions.unique().collectFile(name: 'collated_versions.yml'))
 
 
