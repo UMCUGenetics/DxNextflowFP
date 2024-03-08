@@ -1,6 +1,8 @@
 export_plots: true
 top_modules:
   - "fastqc"
+  - "umitools"
+  - "trimgalore"
 report_section_order:
   software_versions:
     order: -1000
