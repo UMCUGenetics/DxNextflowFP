@@ -25,17 +25,17 @@ validateParameters()
 */
 include { extractFastqPairFromDir } from './modules/local/utils/fastq.nf'
 
-include { FASTQC } from './modules/nf-core/fastqc/main'
-include { MULTIQC } from './modules/nf-core/multiqc/main'
 include { BWAMEM2_MEM } from './modules/nf-core/bwamem2/mem/main'
+include { CUSTOM_DUMPSOFTWAREVERSIONS } from './modules/nf-core/custom/dumpsoftwareversions/main'
 include { GATK4_HAPLOTYPECALLER } from './modules/nf-core/gatk4/haplotypecaller/main'
 include { GATK4_GENOTYPEGVCFS } from './modules/nf-core/gatk4/genotypegvcfs/main'
+include { FASTQC } from './modules/nf-core/fastqc/main'
+include { MULTIQC } from './modules/nf-core/multiqc/main'
 include { SAMTOOLS_INDEX } from './modules/nf-core/samtools/index/main'
 include { SAMTOOLS_INDEX as SAMTOOLS_INDEX_UMITOOLS } from './modules/nf-core/samtools/index/main'
 include { SAMTOOLS_MERGE } from './modules/nf-core/samtools/merge/main'
-include { CUSTOM_DUMPSOFTWAREVERSIONS } from './modules/nf-core/custom/dumpsoftwareversions/main'
-include { UMITOOLS_DEDUP } from './modules/nf-core/umitools/dedup/main' 
 include { TRIMGALORE } from './modules/nf-core/trimgalore/main'
+include { UMITOOLS_DEDUP } from './modules/nf-core/umitools/dedup/main' 
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -122,6 +122,11 @@ workflow {
     // MultiQC
     ch_multiqc_files = Channel.empty()
     ch_multiqc_files = ch_multiqc_files.mix(FASTQC.out.zip.collect{it[1]}.ifEmpty([]))
+    // TODO: include UMITools and TRIMGALORE in MultiQC
+    //ch_multiqc_files = ch_multiqc_files.mix(UMITOOLS_DEDUP.out.tsv_edit_distance.collect{it[1]}.ifEmpty([]))
+    //ch_multiqc_files = ch_multiqc_files.mix(UMITOOLS_DEDUP.out.tsv_per_umi.collect{it[1]}.ifEmpty([]))
+    //ch_multiqc_files = ch_multiqc_files.mix(UMITOOLS_DEDUP.out.tsv_umi_per_position.collect{it[1]}.ifEmpty([]))
+    //ch_multiqc_files = ch_multiqc_files.mix(TRIMGALORE.out.log.collect{it[1]}.ifEmpty([]))
     ch_multiqc_config = Channel.fromPath("$projectDir/assets/multiqc_config.yml", checkIfExists: true)
     MULTIQC(
         ch_multiqc_files.collect(),
