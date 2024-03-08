@@ -122,11 +122,8 @@ workflow {
     // MultiQC
     ch_multiqc_files = Channel.empty()
     ch_multiqc_files = ch_multiqc_files.mix(FASTQC.out.zip.collect{it[1]}.ifEmpty([]))
-    // TODO: include UMITools and TRIMGALORE in MultiQC
-    //ch_multiqc_files = ch_multiqc_files.mix(UMITOOLS_DEDUP.out.tsv_edit_distance.collect{it[1]}.ifEmpty([]))
-    //ch_multiqc_files = ch_multiqc_files.mix(UMITOOLS_DEDUP.out.tsv_per_umi.collect{it[1]}.ifEmpty([]))
-    //ch_multiqc_files = ch_multiqc_files.mix(UMITOOLS_DEDUP.out.tsv_umi_per_position.collect{it[1]}.ifEmpty([]))
-    //ch_multiqc_files = ch_multiqc_files.mix(TRIMGALORE.out.log.collect{it[1]}.ifEmpty([]))
+    ch_multiqc_files = ch_multiqc_files.mix(UMITOOLS_DEDUP.out.log.collect{it[1]}.ifEmpty([]))
+    ch_multiqc_files = ch_multiqc_files.mix(TRIMGALORE.out.log.collect{it[1]}.ifEmpty([]))
     ch_multiqc_config = Channel.fromPath("$projectDir/assets/multiqc_config.yml", checkIfExists: true)
     MULTIQC(
         ch_multiqc_files.collect(),
