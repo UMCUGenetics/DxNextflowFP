@@ -1,0 +1,79 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "bam_fp"
+description: Fingerprint core to generate vcf from bam with specific fingerprint
+  positions.
+keywords:
+  - bam
+  - cram
+  - reference
+  - intervals
+  - fingerprint
+  - vcf
+  - gatk4
+components:
+  - gatk4/haplotypecaller:
+      git_remote: https://github.com/nf-core/modules.git
+  - gatk4/genotypegvcfs:
+      git_remote: https://github.com/nf-core/modules.git
+input:
+  - ch_bam:
+      type: file
+      description: |
+        The input channel containing the BAM/CRAM files
+        Structure: [ val(meta), path(bam) ]
+      pattern: "*.{bam/cram}"
+  - ch_bai:
+      type: file
+      description: |
+        The input channel containing the bam/cram index files
+        Structure: [ val(meta), path(bai) ]
+      pattern: "*.bai"
+  - ch_ref:
+      type: file
+      description: |
+        The input channel containing the reference genome fasta file.
+        Structure: [ val(meta), path(fasta) ]
+      pattern: "*.{fasta/fna}"
+  - ch_ref_index:
+      type: file
+      description: |
+        The input channel containing the reference genome fasta index file.
+        Structure: [ val(meta), path(fasta.fai) ]
+      pattern: "*.fasta.fai"
+  - ch_intervals:
+      type: file
+      description: |
+        The input channel containing the interval file. (fingerprint positions)
+        Structure: [ val(meta), path(*.intervals) ]
+      pattern: "*.intervals"
+  - ch_db_snp:
+      type: file
+      description: |
+        The input channel containing the gatk resource bundle db_snp file.
+        Structure: [ val(meta), path(*.vcf) ]
+      pattern: "*.vcf"
+  - ch_db_snp_tbi:
+      type: file
+      description: |
+        The input channel containing the gatk resource bundle db_snp index file.
+        Structure: [ val(meta), path(*.vcf.tbi) ]
+      pattern: "*.vcf.tbi"
+  - ch_ref_dict:
+      description: ""
+output:
+  - fp_vcf:
+      type: file
+      description: |
+        Fingerprint vcf result file.
+        Structure: [ val(meta), path(*.vcf.gz) ]
+      pattern: "*.vcf.gz"
+  - fp_vcf_tbi:
+      type: file
+      description: |
+        Fingerprint vcf index file.
+        Structure: [ val(meta), path(*.vcf.gz.tbi) ]
+      pattern: "*.vcf.gz.tbi"
+authors:
+  - "@sdevriend"
+maintainers:
+  - "@sdevriend"

@@ -37,6 +37,9 @@ include { SAMTOOLS_MERGE } from './modules/nf-core/samtools/merge/main'
 include { TRIMGALORE } from './modules/nf-core/trimgalore/main'
 include { UMITOOLS_DEDUP } from './modules/nf-core/umitools/dedup/main' 
 
+// Default workflow
+include { BAM_FP } from '../subworkflows/UMCUGenetics/bam_fp/main'
+
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     Main workflow
@@ -84,6 +87,19 @@ workflow {
     SAMTOOLS_INDEX_UMITOOLS(UMITOOLS_DEDUP.out.bam)
     ch_bam_bai = UMITOOLS_DEDUP.out.bam.join(SAMTOOLS_INDEX_UMITOOLS.out.bai) 
 
+
+    BAM_FP(
+        UMITOOLS_DEDUP.out.bam,
+        SAMTOOLS_INDEX_UMITOOLS.out.bai,
+        ch_genome_fasta,
+        ch_genome_fasta_index,
+        ch_genome_dict,
+        ch_dbsnp,
+        ch_dbsnp_index
+    )
+
+    /*
+
     // Variant calling
     GATK4_HAPLOTYPECALLER(
         ch_bam_bai.combine(ch_intervals).map{ meta, bam, bai, intervals -> [meta, bam, bai, intervals, [] ] },
@@ -99,7 +115,7 @@ workflow {
         ch_genome_dict.map{ meta, file -> [file] },
         ch_dbsnp.map{ meta, file -> [file] },
         ch_dbsnp_index.map{ meta, file -> [file] }
-    )
+    )*/
 
 
     // QC
@@ -139,7 +155,7 @@ workflow {
     COMPLETION EMAIL
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
-
+/*
 workflow.onComplete {
     def analysis_id = params.outdir.split('/')[-1]
     // HTML Template
@@ -159,4 +175,4 @@ workflow.onComplete {
         def subject = "FP Workflow Failed: ${analysis_id}"
         sendMail(to: params.email.trim(), subject: subject, body: email_html)
     }
-}
+}*/
