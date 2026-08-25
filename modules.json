@@ -2,6 +2,17 @@
   "name": "UMCUGenetics/DxNextflowFP",
   "homePage": "https://github.com/UMCUGenetics/DxNextflowFP",
   "repos": {
+    "https://github.com/UMCUGenetics/NF-Modules": {
+      "subworkflows": {
+        "UMCUGenetics": {
+          "bam_fp": {
+            "branch": "feature/fingerprint",
+            "git_sha": "11ec8b2d20dd7077ba5bdcfb8c77bb3e2277ab7d",
+            "installed_by": ["subworkflows"]
+          }
+        }
+      }
+    },
     "https://github.com/nf-core/modules.git": {
       "modules": {
         "nf-core": {
@@ -23,12 +34,12 @@
           "gatk4/genotypegvcfs": {
             "branch": "master",
             "git_sha": "d742e3143f2ccb8853c29b35cfcf50b5e5026980",
-            "installed_by": ["modules"]
+            "installed_by": ["bam_fp"]
           },
           "gatk4/haplotypecaller": {
             "branch": "master",
             "git_sha": "d742e3143f2ccb8853c29b35cfcf50b5e5026980",
-            "installed_by": ["modules"]
+            "installed_by": ["bam_fp"]
           },
           "multiqc": {
             "branch": "master",
