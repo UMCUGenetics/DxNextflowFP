@@ -27,7 +27,6 @@ include { BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS } from './subworkflows/nf-core/bam_d
 include { paramsSummaryMap       } from 'plugin/nf-schema'
 include { paramsSummaryMultiqc   } from './subworkflows/nf-core/utils_nfcore_pipeline'
 include { softwareVersionsToYAML } from './subworkflows/nf-core/utils_nfcore_pipeline'
-//include { methodsDescriptionText } from './subworkflows/local/utils_nfcore_play_pipeline'
 include { BAM_FP } from './subworkflows/UMCUGenetics/bam_fp/main'
 
 /*
@@ -142,15 +141,10 @@ workflow {
         .mix(BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS.out.idxstats.collect{it[1]}.ifEmpty([]))
         .mix(TRIMGALORE.out.log.collect{it[1]}.ifEmpty([]))
         .mix(FASTQC.out.zip.collect{it[1]}.ifEmpty([]))
-    /*def ch_multiqc_custom_methods_description = multiqc_methods_description
-        ? file(multiqc_methods_description, checkIfExists: true)
-        : file("${projectDir}/assets/methods_description_template.yml", checkIfExists: true)*/
-    //def ch_methods_description = channel.value(methodsDescriptionText(ch_multiqc_custom_methods_description))
-    //ch_multiqc_files = ch_multiqc_files.mix(ch_methods_description.collectFile(name: 'methods_description_mqc.yaml', sort: true))
-  
-
+    
     def multiqc_config = "${projectDir}/assets/multiqc_config.yml"
     def multiqc_logo = ""
+
 
     MULTIQC(
         ch_multiqc_files.flatten().collect().map { files ->
