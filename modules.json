@@ -1,95 +1,73 @@
 {
-    "name": "UMCUGenetics/DxNextflowFP",
-    "homePage": "https://github.com/UMCUGenetics/DxNextflowFP",
-    "repos": {
-        "https://github.com/UMCUGenetics/NF-Modules": {
-            "subworkflows": {
-                "UMCUGenetics": {
-                    "bam_fp": {
-                        "branch": "feature/fingerprint",
-                        "git_sha": "11ec8b2d20dd7077ba5bdcfb8c77bb3e2277ab7d",
-                        "installed_by": [
-                            "subworkflows"
-                        ]
-                    }
-                }
-            }
-        },
-        "https://github.com/nf-core/modules.git": {
-            "modules": {
-                "nf-core": {
-                    "bwamem2/mem": {
-                        "branch": "master",
-                        "git_sha": "62ce917fd775aaef732eb82019de069c765adfd3",
-                        "installed_by": [
-                            "modules"
-                        ]
-                    },
-                    "custom/dumpsoftwareversions": {
-                        "branch": "master",
-                        "git_sha": "eac429d4c67ac5114ce7d4287d460d8f05fd9fab",
-                        "installed_by": [
-                            "modules"
-                        ]
-                    },
-                    "fastqc": {
-                        "branch": "master",
-                        "git_sha": "6d46786420b4d7bc88eba026eb389c0c5535d120",
-                        "installed_by": [
-                            "modules"
-                        ]
-                    },
-                    "gatk4/genotypegvcfs": {
-                        "branch": "master",
-                        "git_sha": "d5de7a949aa84689f4098c958f05733a6c3804f5",
-                        "installed_by": [
-                            "bam_fp"
-                        ]
-                    },
-                    "gatk4/haplotypecaller": {
-                        "branch": "master",
-                        "git_sha": "d742e3143f2ccb8853c29b35cfcf50b5e5026980",
-                        "installed_by": [
-                            "bam_fp"
-                        ]
-                    },
-                    "multiqc": {
-                        "branch": "master",
-                        "git_sha": "ccacf6f5de6df3bc6d73b665c1fd2933d8bbc290",
-                        "installed_by": [
-                            "modules"
-                        ]
-                    },
-                    "samtools/index": {
-                        "branch": "master",
-                        "git_sha": "f4596fe0bdc096cf53ec4497e83defdb3a94ff62",
-                        "installed_by": [
-                            "modules"
-                        ]
-                    },
-                    "samtools/merge": {
-                        "branch": "master",
-                        "git_sha": "f4596fe0bdc096cf53ec4497e83defdb3a94ff62",
-                        "installed_by": [
-                            "modules"
-                        ]
-                    },
-                    "trimgalore": {
-                        "branch": "master",
-                        "git_sha": "d2c5e76f291379f3dd403e48e46ed7e6ba5da744",
-                        "installed_by": [
-                            "modules"
-                        ]
-                    },
-                    "umitools/dedup": {
-                        "branch": "master",
-                        "git_sha": "ff7e93715a2acecf3f143ec78c9858deba2984d0",
-                        "installed_by": [
-                            "modules"
-                        ]
-                    }
-                }
-            }
+  "name": "UMCUGenetics/DxNextflowFP",
+  "homePage": "https://github.com/UMCUGenetics/DxNextflowFP",
+  "repos": {
+    "https://github.com/UMCUGenetics/NF-Modules": {
+      "subworkflows": {
+        "UMCUGenetics": {
+          "bam_fp": {
+            "branch": "feature/fingerprint",
+            "git_sha": "11ec8b2d20dd7077ba5bdcfb8c77bb3e2277ab7d",
+            "installed_by": ["subworkflows"]
+          }
         }
+      }
+    },
+    "https://github.com/nf-core/modules.git": {
+      "modules": {
+        "nf-core": {
+          "bwamem2/mem": {
+            "branch": "master",
+            "git_sha": "62ce917fd775aaef732eb82019de069c765adfd3",
+            "installed_by": ["modules"]
+          },
+          "custom/dumpsoftwareversions": {
+            "branch": "master",
+            "git_sha": "eac429d4c67ac5114ce7d4287d460d8f05fd9fab",
+            "installed_by": ["modules"]
+          },
+          "fastqc": {
+            "branch": "master",
+            "git_sha": "6d46786420b4d7bc88eba026eb389c0c5535d120",
+            "installed_by": ["modules"]
+          },
+          "gatk4/genotypegvcfs": {
+            "branch": "master",
+            "git_sha": "d5de7a949aa84689f4098c958f05733a6c3804f5",
+            "installed_by": ["bam_fp"]
+          },
+          "gatk4/haplotypecaller": {
+            "branch": "master",
+            "git_sha": "d742e3143f2ccb8853c29b35cfcf50b5e5026980",
+            "installed_by": ["bam_fp"]
+          },
+          "multiqc": {
+            "branch": "master",
+            "git_sha": "ccacf6f5de6df3bc6d73b665c1fd2933d8bbc290",
+            "installed_by": ["modules"]
+          },
+          "samtools/index": {
+            "branch": "master",
+            "git_sha": "f4596fe0bdc096cf53ec4497e83defdb3a94ff62",
+            "installed_by": ["modules"]
+          },
+          "samtools/merge": {
+            "branch": "master",
+            "git_sha": "f4596fe0bdc096cf53ec4497e83defdb3a94ff62",
+            "installed_by": ["modules"]
+          },
+          "trimgalore": {
+            "branch": "master",
+            "git_sha": "d2c5e76f291379f3dd403e48e46ed7e6ba5da744",
+            "installed_by": ["modules"]
+          },
+          "umitools/dedup": {
+            "branch": "master",
+            "git_sha": "ff7e93715a2acecf3f143ec78c9858deba2984d0",
+            "installed_by": ["modules"]
+          }
+        }
+      }
     }
+  }
 }

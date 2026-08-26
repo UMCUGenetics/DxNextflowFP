@@ -5,18 +5,7 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     Github : https://github.com/UMCUGenetics/DxNextflowFP
 ----------------------------------------------------------------------------------------
-*/
 
-nextflow.enable.dsl = 2
-
-/*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    Validate parameters
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*/
-
-include { validateParameters; } from 'plugin/nf-validation'
-validateParameters()
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -38,7 +27,7 @@ include { TRIMGALORE } from './modules/nf-core/trimgalore/main'
 include { UMITOOLS_DEDUP } from './modules/nf-core/umitools/dedup/main' 
 
 // Default workflow
-include { BAM_FP } from '../subworkflows/UMCUGenetics/bam_fp/main'
+include { BAM_FP } from './subworkflows/UMCUGenetics/bam_fp/main'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -54,7 +43,7 @@ workflow {
     ch_bwa_index = Channel.fromPath("${params.bwa_index}*").map{ file -> [file.getSimpleName(), file] }.groupTuple().collect()
     ch_dbsnp = Channel.fromPath("${params.dbsnp}").map{ file -> [file.getSimpleName(), file] }.collect()
     ch_dbsnp_index = Channel.fromPath("${params.dbsnp}.tbi").map{ file -> [file.getSimpleName(), file] }.collect()
-    ch_intervals = Channel.fromPath("${params.intervals}").collect()
+    ch_intervals = Channel.fromPath("${params.intervals}").map{ file -> [file.getSimpleName(), file] }.collect()
 
 
     // Input channel
@@ -63,8 +52,10 @@ workflow {
     // Trim FASTQs
     TRIMGALORE(ch_fastq)
 
+
+
     // Mapping
-    BWAMEM2_MEM(TRIMGALORE.out.reads, ch_bwa_index, true)
+    BWAMEM2_MEM(TRIMGALORE.out.reads, ch_bwa_index, ch_genome_fasta, true)
 
     // Merge multiple lane samples and index
     BWAMEM2_MEM.out.bam
@@ -94,6 +85,7 @@ workflow {
         ch_genome_fasta,
         ch_genome_fasta_index,
         ch_genome_dict,
+        ch_intervals,
         ch_dbsnp,
         ch_dbsnp_index
     )
@@ -122,6 +114,7 @@ workflow {
     FASTQC(ch_fastq)
 
     // Softare versions
+    /*
     ch_versions = channel.empty()
     ch_versions = ch_versions.mix(BWAMEM2_MEM.out.versions)
     ch_versions = ch_versions.mix(SAMTOOLS_INDEX.out.versions)
@@ -133,7 +126,7 @@ workflow {
     ch_versions = ch_versions.mix(SAMTOOLS_INDEX_UMITOOLS.out.versions)
     ch_versions = ch_versions.mix(UMITOOLS_DEDUP.out.versions)
     CUSTOM_DUMPSOFTWAREVERSIONS(ch_versions.unique().collectFile(name: 'collated_versions.yml'))
-
+*/
 
     // MultiQC
     ch_multiqc_files = Channel.empty()
