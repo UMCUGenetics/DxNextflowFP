@@ -16,8 +16,7 @@ include { extractFastqPairFromDir } from './modules/local/utils/fastq.nf'
 
 include { BWAMEM2_MEM } from './modules/nf-core/bwamem2/mem/main'
 include { CUSTOM_DUMPSOFTWAREVERSIONS } from './modules/nf-core/custom/dumpsoftwareversions/main'
-include { GATK4_HAPLOTYPECALLER } from './modules/nf-core/gatk4/haplotypecaller/main'
-include { GATK4_GENOTYPEGVCFS } from './modules/nf-core/gatk4/genotypegvcfs/main'
+
 include { FASTQC } from './modules/nf-core/fastqc/main'
 include { MULTIQC } from './modules/nf-core/multiqc/main'
 include { SAMTOOLS_INDEX } from './modules/nf-core/samtools/index/main'
@@ -89,25 +88,6 @@ workflow {
         ch_dbsnp,
         ch_dbsnp_index
     )
-
-    /*
-
-    // Variant calling
-    GATK4_HAPLOTYPECALLER(
-        ch_bam_bai.combine(ch_intervals).map{ meta, bam, bai, intervals -> [meta, bam, bai, intervals, [] ] },
-        ch_genome_fasta, ch_genome_fasta_index, ch_genome_dict, ch_dbsnp, ch_dbsnp_index
-    )
-
-    GATK4_GENOTYPEGVCFS(
-        GATK4_HAPLOTYPECALLER.out.vcf.join(GATK4_HAPLOTYPECALLER.out.tbi).combine(ch_intervals).map{
-            meta, vcf, tbi , intervals -> [meta, vcf, tbi, intervals, []]
-        },
-        ch_genome_fasta.map{ meta, file -> [file] },
-        ch_genome_fasta_index.map{ meta, file -> [file] },
-        ch_genome_dict.map{ meta, file -> [file] },
-        ch_dbsnp.map{ meta, file -> [file] },
-        ch_dbsnp_index.map{ meta, file -> [file] }
-    )*/
 
 
     // QC
