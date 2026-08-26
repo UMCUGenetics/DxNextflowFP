@@ -15,7 +15,6 @@
 include { extractFastqPairFromDir } from './modules/local/utils/fastq.nf'
 
 include { BWAMEM2_MEM } from './modules/nf-core/bwamem2/mem/main'
-include { CUSTOM_DUMPSOFTWAREVERSIONS } from './modules/nf-core/custom/dumpsoftwareversions/main'
 
 include { FASTQC } from './modules/nf-core/fastqc/main'
 include { MULTIQC } from './modules/nf-core/multiqc/main'
