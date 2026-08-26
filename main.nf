@@ -25,6 +25,10 @@ include { TRIMGALORE } from './modules/nf-core/trimgalore/main'
 
 // Subworkflows nf-core/UMCUGenetics
 include { BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS } from './subworkflows/nf-core/bam_dedup_stats_samtools_umitools/main'
+include { paramsSummaryMap       } from 'plugin/nf-schema'
+include { paramsSummaryMultiqc   } from './subworkflows/nf-core/utils_nfcore_pipeline'
+include { softwareVersionsToYAML } from './subworkflows/nf-core/utils_nfcore_pipeline'
+//include { methodsDescriptionText } from './subworkflows/local/utils_nfcore_play_pipeline'
 include { BAM_FP } from './subworkflows/UMCUGenetics/bam_fp/main'
 
 /*
@@ -46,11 +50,10 @@ workflow {
 
     // Input channel
     ch_fastq = extractFastqPairFromDir(params.input, params.outdir)
+    def outdir = params.outdir
 
     // Trim FASTQs
     TRIMGALORE(ch_fastq)
-
-
 
     // Mapping
     BWAMEM2_MEM(TRIMGALORE.out.reads, ch_bwa_index, ch_genome_fasta, true)
@@ -75,8 +78,6 @@ workflow {
     //UMI dedup
     BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS(ch_bam_bai, true, false)
 
-
-
     BAM_FP(
         BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS.out.bam,
         BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS.out.index,
@@ -92,34 +93,80 @@ workflow {
     // QC
     FASTQC(ch_fastq)
 
-    // Softare versions
-    /*
-    ch_versions = channel.empty()
-    ch_versions = ch_versions.mix(BWAMEM2_MEM.out.versions)
-    ch_versions = ch_versions.mix(SAMTOOLS_INDEX.out.versions)
-    ch_versions = ch_versions.mix(SAMTOOLS_MERGE.out.versions)
-    ch_versions = ch_versions.mix(GATK4_HAPLOTYPECALLER.out.versions)
-    ch_versions = ch_versions.mix(GATK4_GENOTYPEGVCFS.out.versions)
-    ch_versions = ch_versions.mix(FASTQC.out.versions)
-    ch_versions = ch_versions.mix(UMITOOLS_DEDUP.out.versions)
-    ch_versions = ch_versions.mix(SAMTOOLS_INDEX_UMITOOLS.out.versions)
-    ch_versions = ch_versions.mix(UMITOOLS_DEDUP.out.versions)
-    CUSTOM_DUMPSOFTWAREVERSIONS(ch_versions.unique().collectFile(name: 'collated_versions.yml'))
-*/
 
     // MultiQC
-    ch_multiqc_files = Channel.empty()
-    ch_multiqc_files = ch_multiqc_files.mix(FASTQC.out.zip.collect{it[1]}.ifEmpty([]))
-    //ch_multiqc_files = ch_multiqc_files.mix(UMITOOLS_DEDUP.out.log.collect{it[1]}.ifEmpty([]))
-    ch_multiqc_files = ch_multiqc_files.mix(TRIMGALORE.out.log.collect{it[1]}.ifEmpty([]))
-    ch_multiqc_config = Channel.fromPath("$projectDir/assets/multiqc_config.yml", checkIfExists: true)
-    /*MULTIQC(
-        ch_multiqc_files.collect(),
-        ch_multiqc_config.toList(),
-        Channel.empty().toList(),
-        Channel.empty().toList()
-    )*/
+    def ch_versions = channel.empty()
+    def ch_multiqc_files = channel.empty()
+    def topic_versions = channel.topic("versions")
+        .distinct()
+        .branch { entry ->
+            versions_file: entry instanceof Path
+            versions_tuple: true
+        }
 
+    def topic_versions_string = topic_versions.versions_tuple
+        .map { process, tool, version ->
+            [ process[process.lastIndexOf(':')+1..-1], "  ${tool}: ${version}" ]
+        }
+        .groupTuple(by:0)
+        .map { process, tool_versions ->
+            tool_versions.unique().sort()
+            "${process}:\n${tool_versions.join('\n')}"
+        }
+
+    def ch_collated_versions = softwareVersionsToYAML(ch_versions.mix(topic_versions.versions_file))
+        .mix(topic_versions_string)
+        .collectFile(
+            storeDir: "${outdir}/pipeline_info",
+            name:  'Fingerprint_software_'  + 'mqc_'  + 'versions.yml',
+            sort: true,
+            newLine: true
+        )
+
+
+
+    ch_multiqc_logo = params.multiqc_logo ?
+        Channel.fromPath(params.multiqc_logo, checkIfExists: true) :
+        Channel.empty()
+
+
+    
+    def ch_summary_params = paramsSummaryMap(workflow, parameters_schema: "nextflow_schema.json")
+    def ch_workflow_summary = channel.value(paramsSummaryMultiqc(ch_summary_params))
+
+    ch_multiqc_files = ch_multiqc_files.mix(ch_workflow_summary.collectFile(name: 'workflow_summary_mqc.yaml'))
+    ch_multiqc_files = ch_multiqc_files.mix(ch_collated_versions)
+    
+    ch_multiqc_files = ch_multiqc_files
+        .mix(BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS.out.stats.collect{it[1]}.ifEmpty([]))
+        .mix(BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS.out.flagstat.collect{it[1]}.ifEmpty([]))
+        .mix(BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS.out.idxstats.collect{it[1]}.ifEmpty([]))
+        .mix(TRIMGALORE.out.log.collect{it[1]}.ifEmpty([]))
+        .mix(FASTQC.out.zip.collect{it[1]}.ifEmpty([]))
+    /*def ch_multiqc_custom_methods_description = multiqc_methods_description
+        ? file(multiqc_methods_description, checkIfExists: true)
+        : file("${projectDir}/assets/methods_description_template.yml", checkIfExists: true)*/
+    //def ch_methods_description = channel.value(methodsDescriptionText(ch_multiqc_custom_methods_description))
+    //ch_multiqc_files = ch_multiqc_files.mix(ch_methods_description.collectFile(name: 'methods_description_mqc.yaml', sort: true))
+  
+
+    def multiqc_config = "${projectDir}/assets/multiqc_config.yml"
+    def multiqc_logo = ""
+
+    MULTIQC(
+        ch_multiqc_files.flatten().collect().map { files ->
+            [
+                [id: 'fp'],
+                files,
+                multiqc_config
+                    ? file(multiqc_config, checkIfExists: true)
+                    : file("${projectDir}/assets/multiqc_config.yml", checkIfExists: true),
+                multiqc_logo ? file(multiqc_logo, checkIfExists: true) : [],
+                [],
+                [],
+            ]
+        }
+    )
 }
 
 /*
