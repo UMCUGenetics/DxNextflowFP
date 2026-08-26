@@ -20,12 +20,11 @@ include { CUSTOM_DUMPSOFTWAREVERSIONS } from './modules/nf-core/custom/dumpsoftw
 include { FASTQC } from './modules/nf-core/fastqc/main'
 include { MULTIQC } from './modules/nf-core/multiqc/main'
 include { SAMTOOLS_INDEX } from './modules/nf-core/samtools/index/main'
-include { SAMTOOLS_INDEX as SAMTOOLS_INDEX_UMITOOLS } from './modules/nf-core/samtools/index/main'
 include { SAMTOOLS_MERGE } from './modules/nf-core/samtools/merge/main'
 include { TRIMGALORE } from './modules/nf-core/trimgalore/main'
-include { UMITOOLS_DEDUP } from './modules/nf-core/umitools/dedup/main' 
 
-// Default workflow
+// Subworkflows nf-core/UMCUGenetics
+include { BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS } from './subworkflows/nf-core/bam_dedup_stats_samtools_umitools/main'
 include { BAM_FP } from './subworkflows/UMCUGenetics/bam_fp/main'
 
 /*
@@ -66,21 +65,21 @@ workflow {
         .set{ bams }
  
     // If there are no samples to merge, skip the process
-    SAMTOOLS_MERGE(bams.multiple, ch_genome_fasta, ch_genome_fasta_index)
+    SAMTOOLS_MERGE(bams.multiple, ch_genome_fasta.join(ch_genome_fasta_index))
     prepared_bam = bams.single.mix(SAMTOOLS_MERGE.out.bam)
+
     SAMTOOLS_INDEX(prepared_bam)
 
-    ch_bam_bai = prepared_bam.join(SAMTOOLS_INDEX.out.bai)
+    ch_bam_bai = prepared_bam.join(SAMTOOLS_INDEX.out.index)
 
     //UMI dedup
-    UMITOOLS_DEDUP(ch_bam_bai, true)
-    SAMTOOLS_INDEX_UMITOOLS(UMITOOLS_DEDUP.out.bam)
-    ch_bam_bai = UMITOOLS_DEDUP.out.bam.join(SAMTOOLS_INDEX_UMITOOLS.out.bai) 
+    BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS(ch_bam_bai, true, false)
+
 
 
     BAM_FP(
-        UMITOOLS_DEDUP.out.bam,
-        SAMTOOLS_INDEX_UMITOOLS.out.bai,
+        BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS.out.bam,
+        BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS.out.index,
         ch_genome_fasta,
         ch_genome_fasta_index,
         ch_genome_dict,
@@ -111,15 +110,15 @@ workflow {
     // MultiQC
     ch_multiqc_files = Channel.empty()
     ch_multiqc_files = ch_multiqc_files.mix(FASTQC.out.zip.collect{it[1]}.ifEmpty([]))
-    ch_multiqc_files = ch_multiqc_files.mix(UMITOOLS_DEDUP.out.log.collect{it[1]}.ifEmpty([]))
+    //ch_multiqc_files = ch_multiqc_files.mix(UMITOOLS_DEDUP.out.log.collect{it[1]}.ifEmpty([]))
     ch_multiqc_files = ch_multiqc_files.mix(TRIMGALORE.out.log.collect{it[1]}.ifEmpty([]))
     ch_multiqc_config = Channel.fromPath("$projectDir/assets/multiqc_config.yml", checkIfExists: true)
-    MULTIQC(
+    /*MULTIQC(
         ch_multiqc_files.collect(),
         ch_multiqc_config.toList(),
         Channel.empty().toList(),
         Channel.empty().toList()
-    )
+    )*/
 
 }
 
