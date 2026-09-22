@@ -27,7 +27,7 @@ include { BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS } from './subworkflows/nf-core/bam_d
 include { paramsSummaryMap       } from 'plugin/nf-schema'
 include { paramsSummaryMultiqc   } from './subworkflows/nf-core/utils_nfcore_pipeline'
 include { softwareVersionsToYAML } from './subworkflows/nf-core/utils_nfcore_pipeline'
-include { BAM_FP } from './subworkflows/UMCUGenetics/bam_fp/main'
+include { BAM_VARIANTCALLING_INTERVALS } from './subworkflows/UMCUGenetics/bam_variantcalling_intervals/main'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -76,7 +76,7 @@ workflow {
     //UMI dedup
     BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS(ch_bam_bai, true, false)
 
-    BAM_FP(
+    BAM_VARIANTCALLING_INTERVALS(
         BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS.out.bam,
         BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS.out.index,
         ch_genome_fasta,

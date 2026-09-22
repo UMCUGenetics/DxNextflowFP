@@ -1,11 +1,11 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
-name: "bam_fp"
-description: Fingerprint core to generate vcf from bam with specific fingerprint
-  positions.
+name: "BAM_VARIANTCALLING_INTERVALS"
+description: Create vcf from bam file based on a specific interval input.
 keywords:
   - bam
   - cram
   - reference
+  - variantcalling
   - intervals
   - fingerprint
   - vcf
@@ -61,16 +61,16 @@ input:
   - ch_ref_dict:
       description: ""
 output:
-  - fp_vcf:
+  - vcf:
       type: file
       description: |
-        Fingerprint vcf result file.
+        Vcf result file.
         Structure: [ val(meta), path(*.vcf.gz) ]
       pattern: "*.vcf.gz"
-  - fp_vcf_tbi:
+  - tbi:
       type: file
       description: |
-        Fingerprint vcf index file.
+        Vcf index file.
         Structure: [ val(meta), path(*.vcf.gz.tbi) ]
       pattern: "*.vcf.gz.tbi"
 authors:
