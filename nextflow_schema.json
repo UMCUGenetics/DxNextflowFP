@@ -34,12 +34,52 @@
                     "description": "Email address for completion summary.",
                     "fa_icon": "fas fa-envelope",
                     "help_text": "Set this parameter to your e-mail address to get a summary e-mail with details of the run sent to you when the workflow exits. If set in your user config file (`~/.nextflow/config`) then you don't need to specify this on the command line for every run.",
-                    "pattern": "^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$"
+                    "pattern": "^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$",
+                    "default": "S.deVriend-3@umcutrecht.nl"
                 },
                 "multiqc_title": {
                     "type": "string",
                     "description": "MultiQC report title. Printed as page header, used for filename if not otherwise specified.",
                     "fa_icon": "fas fa-file-signature"
+                }
+            }
+        },
+        "reference_alignment_locations": {
+            "title": "Reference alignment locations",
+            "type": "object",
+            "description": "",
+            "default": "",
+            "fa_icon": "fas fa-scroll",
+            "properties": {
+                "intervals": {
+                    "type": "string",
+                    "default": "/hpc/diaggen/projects/Fingerprint_Nimagen/Tracks/nimagen_hg19.interval_list",
+                    "fa_icon": "fas fa-list-ul",
+                    "description": "Path to intervals file."
+                },
+                "genome_fasta": {
+                    "type": "string",
+                    "default": "/hpc/diaggen/data/databases/ref_genomes/Homo_sapiens.GRCh37.GATK.illumina/Homo_sapiens.GRCh37.GATK.illumina.fasta",
+                    "fa_icon": "fas fa-user-tag",
+                    "description": "Path to genome in .fasta format."
+                },
+                "genome_dict": {
+                    "type": "string",
+                    "default": "/hpc/diaggen/data/databases/ref_genomes/Homo_sapiens.GRCh37.GATK.illumina/Homo_sapiens.GRCh37.GATK.illumina.dict",
+                    "fa_icon": "fas fa-user-tag",
+                    "description": "Path to genome.dict file."
+                },
+                "bwa_index": {
+                    "type": "string",
+                    "default": "/hpc/diaggen/projects/Fingerprint_Nimagen/bwa-mem2_index/Homo_sapiens.GRCh37.GATK.illumina",
+                    "fa_icon": "fas fa-database",
+                    "description": "Path to bwa-index folder."
+                },
+                "dbsnp": {
+                    "type": "string",
+                    "default": "//hpc/diaggen/data/databases/GATK_resource_bundle/b37/dbsnp_138.b37.vcf.gz",
+                    "fa_icon": "fas fa-database",
+                    "description": "Path to dbsnp file."
                 }
             }
         },
@@ -197,6 +237,9 @@
     "allOf": [
         {
             "$ref": "#/$defs/input_output_options"
+        },
+        {
+            "$ref": "#/$defs/reference_alignment_locations"
         },
         {
             "$ref": "#/$defs/institutional_config_options"

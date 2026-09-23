@@ -3,7 +3,18 @@
     IMPORT MODULES / SUBWORKFLOWS / FUNCTIONS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
+
+include { BWAMEM2_MEM } from '../modules/nf-core/bwamem2/mem/main'
+include { FASTQC } from '../modules/nf-core/fastqc/main'
 include { MULTIQC                } from '../modules/nf-core/multiqc/main'
+include { SAMTOOLS_INDEX } from '../modules/nf-core/samtools/index/main'
+include { SAMTOOLS_MERGE } from '../modules/nf-core/samtools/merge/main'
+include { TRIMGALORE } from '../modules/nf-core/trimgalore/main'
+
+
+include { BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS } from '../subworkflows/nf-core/bam_dedup_stats_samtools_umitools/main'
+include { BAM_VARIANTCALLING_INTERVALS } from '../subworkflows/UMCUGenetics/bam_variantcalling_intervals/main'
+
 include { paramsSummaryMap       } from 'plugin/nf-schema'
 include { paramsSummaryMultiqc   } from '../subworkflows/nf-core/utils_nfcore_pipeline'
 include { softwareVersionsToYAML } from '../subworkflows/nf-core/utils_nfcore_pipeline'
@@ -25,6 +36,50 @@ workflow DXNEXTFLOWFP {
     outdir
 
     main:
+
+    ch_genome_fasta = Channel.fromPath("${params.genome_fasta}").map{ file -> [file.getSimpleName(), file] }.collect()
+    ch_genome_fasta_index = Channel.fromPath("${params.genome_fasta}.fai").map{ file -> [file.getSimpleName(), file] }.collect()
+    ch_genome_dict = Channel.fromPath("${params.genome_dict}").map{ file -> [file.getSimpleName(), file] }.collect()
+    ch_bwa_index = Channel.fromPath("${params.bwa_index}*").map{ file -> [file.getSimpleName(), file] }.groupTuple().collect()
+    ch_dbsnp = Channel.fromPath("${params.dbsnp}").map{ file -> [file.getSimpleName(), file] }.collect()
+    ch_dbsnp_index = Channel.fromPath("${params.dbsnp}.tbi").map{ file -> [file.getSimpleName(), file] }.collect()
+    ch_intervals = Channel.fromPath("${params.intervals}").map{ file -> [file.getSimpleName(), file] }.collect()
+
+    ///
+    /// Workflow
+    ///
+    FASTQC(ch_samplesheet)
+    TRIMGALORE(ch_samplesheet)
+    BWAMEM2_MEM(TRIMGALORE.out.reads, ch_bwa_index, ch_genome_fasta, true)
+    BWAMEM2_MEM.out.bam
+        .map{ meta, bam -> [ meta - meta.subMap('rg_id', 'flowcell'), bam ] }
+        .groupTuple().branch{
+            single: it[1].size() == 1
+            multiple: it[1].size() > 1
+            }
+        .set{ bams }
+ 
+    // If there are no samples to merge, skip the process
+    SAMTOOLS_MERGE(bams.multiple, ch_genome_fasta.join(ch_genome_fasta_index), "bai")
+    prepared_bam = bams.single.mix(SAMTOOLS_MERGE.out.bam)
+
+    SAMTOOLS_INDEX(prepared_bam)
+
+    ch_bam_bai = prepared_bam.join(SAMTOOLS_INDEX.out.index)
+
+    //UMI dedup
+    BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS(ch_bam_bai, true, false)
+
+    BAM_VARIANTCALLING_INTERVALS(
+        BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS.out.bam,
+        BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS.out.index,
+        ch_genome_fasta,
+        ch_genome_fasta_index,
+        ch_genome_dict,
+        ch_intervals,
+        ch_dbsnp,
+        ch_dbsnp_index
+    )
 
     def ch_versions = channel.empty()
     def ch_multiqc_files = channel.empty()
