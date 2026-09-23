@@ -1,9 +1,10 @@
-# Nextflow
 .nextflow*
 work/
-
-# Python
-venv
-
-# MacOS
+data/
+results/
 .DS_Store
+testing/
+testing*
+*.pyc
+null/
+.lineage/

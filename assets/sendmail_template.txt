@@ -8,7 +8,13 @@ Content-Type: text/html; charset=utf-8
 
 $email_html
 
-<% out << new File("$projectDir/assets/test-play_logo_light.png").
+--nfcoremimeboundary
+Content-Type: image/png;name="UMCUGenetics-dxnextflowfp_logo.png"
+Content-Transfer-Encoding: base64
+Content-ID: <nfcorepipelinelogo>
+Content-Disposition: inline; filename="UMCUGenetics-dxnextflowfp_logo_light.png"
+
+<% out << new File("$projectDir/assets/UMCUGenetics-dxnextflowfp_logo_light.png").
     bytes.
     encodeBase64().
     toString().
