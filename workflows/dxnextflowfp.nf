@@ -116,6 +116,14 @@ workflow DXNEXTFLOWFP {
     //
     // MODULE: MultiQC
     //
+    ch_multiqc_files = ch_multiqc_files
+        .mix(FASTQC.out.zip.map{ _meta, file -> file })
+        .mix(TRIMGALORE.out.log.map{ _meta, file -> file })
+        .mix(BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS.out.deduplog.map{ _meta, file -> file })
+        .mix(BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS.out.stats.map{ _meta, file -> file })
+        .mix(BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS.out.flagstat.map{ _meta, file -> file })
+        .mix(BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS.out.idxstats.map{ _meta, file -> file })
+
     ch_multiqc_files = ch_multiqc_files.mix(ch_collated_versions)
     def ch_summary_params = paramsSummaryMap(workflow, parameters_schema: "nextflow_schema.json")
     def ch_workflow_summary = channel.value(paramsSummaryMultiqc(ch_summary_params))
