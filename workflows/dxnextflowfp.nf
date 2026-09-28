@@ -12,8 +12,9 @@ include { SAMTOOLS_MERGE } from '../modules/nf-core/samtools/merge/main'
 include { TRIMGALORE } from '../modules/nf-core/trimgalore/main'
 
 
-include { BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS } from '../subworkflows/nf-core/bam_dedup_stats_samtools_umitools/main'
-include { BAM_VARIANTCALLING_INTERVALS } from '../subworkflows/UMCUGenetics/bam_variantcalling_intervals/main'
+include { BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS     } from '../subworkflows/nf-core/bam_dedup_stats_samtools_umitools/main'
+include { BAM_STATS_SAMTOOLS                    } from '../subworkflows/nf-core/bam_stats_samtools/main'
+include { BAM_VARIANTCALLING_INTERVALS          } from '../subworkflows/UMCUGenetics/bam_variantcalling_intervals/main'
 
 include { paramsSummaryMap       } from 'plugin/nf-schema'
 include { paramsSummaryMultiqc   } from '../subworkflows/nf-core/utils_nfcore_pipeline'
@@ -30,12 +31,16 @@ workflow DXNEXTFLOWFP {
 
     take:
     ch_samplesheet // channel: samplesheet read in from --input
+    val_umi_dedup // value
     multiqc_config
     multiqc_logo
     multiqc_methods_description
     outdir
 
     main:
+
+    def ch_versions = channel.empty()
+    def ch_multiqc_files = channel.empty()
 
     ch_genome_fasta = Channel.fromPath("${params.genome_fasta}").map{ file -> [file.getSimpleName(), file] }.collect()
     ch_genome_fasta_index = Channel.fromPath("${params.genome_fasta}.fai").map{ file -> [file.getSimpleName(), file] }.collect()
@@ -68,11 +73,28 @@ workflow DXNEXTFLOWFP {
     ch_bam_bai = prepared_bam.join(SAMTOOLS_INDEX.out.index)
 
     //UMI dedup
-    BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS(ch_bam_bai, true, false)
-
+    if (val_umi_dedup){
+        
+        BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS(ch_bam_bai, true, false)
+        ch_bam = BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS.out.bam
+        ch_bam_index = BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS.out.index
+        ch_multiqc_files = ch_multiqc_files
+            .mix(BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS.out.deduplog.map{ _meta, file -> file })
+            .mix(BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS.out.stats.map{ _meta, file -> file })
+            .mix(BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS.out.flagstat.map{ _meta, file -> file })
+            .mix(BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS.out.idxstats.map{ _meta, file -> file })
+    } else {
+        ch_bam = prepared_bam
+        ch_bam_index = SAMTOOLS_INDEX.out.index
+        BAM_STATS_SAMTOOLS(ch_bam_bai , [[:], [], []])
+        ch_multiqc_files = ch_multiqc_files
+            .mix(BAM_STATS_SAMTOOLS.out.stats.map{ _meta, file -> file })
+            .mix(BAM_STATS_SAMTOOLS.out.flagstat.map{ _meta, file -> file })
+            .mix(BAM_STATS_SAMTOOLS.out.idxstats.map{ _meta, file -> file })
+    }
     BAM_VARIANTCALLING_INTERVALS(
-        BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS.out.bam,
-        BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS.out.index,
+        ch_bam,
+        ch_bam_index,
         ch_genome_fasta,
         ch_genome_fasta_index,
         ch_genome_dict,
@@ -81,8 +103,7 @@ workflow DXNEXTFLOWFP {
         ch_dbsnp_index
     )
 
-    def ch_versions = channel.empty()
-    def ch_multiqc_files = channel.empty()
+    
 
     //
     // Collate and save software versions
@@ -119,10 +140,7 @@ workflow DXNEXTFLOWFP {
     ch_multiqc_files = ch_multiqc_files
         .mix(FASTQC.out.zip.map{ _meta, file -> file })
         .mix(TRIMGALORE.out.log.map{ _meta, file -> file })
-        .mix(BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS.out.deduplog.map{ _meta, file -> file })
-        .mix(BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS.out.stats.map{ _meta, file -> file })
-        .mix(BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS.out.flagstat.map{ _meta, file -> file })
-        .mix(BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS.out.idxstats.map{ _meta, file -> file })
+
 
     ch_multiqc_files = ch_multiqc_files.mix(ch_collated_versions)
     def ch_summary_params = paramsSummaryMap(workflow, parameters_schema: "nextflow_schema.json")

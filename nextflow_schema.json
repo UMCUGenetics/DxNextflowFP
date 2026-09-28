@@ -81,6 +81,19 @@
                 }
             }
         },
+        "workflow_options": {
+            "title": "Workflow options",
+            "type": "object",
+            "description": "",
+            "default": "",
+            "properties": {
+                "val_umi_dedup": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Run pipeline with umitools dedup"
+                }
+            }
+        },
         "institutional_config_options": {
             "title": "Institutional config options",
             "type": "object",
@@ -238,6 +251,9 @@
         },
         {
             "$ref": "#/$defs/reference_alignment_locations"
+        },
+        {
+            "$ref": "#/$defs/workflow_options"
         },
         {
             "$ref": "#/$defs/institutional_config_options"
