@@ -31,7 +31,6 @@ workflow DXNEXTFLOWFP {
 
     take:
     ch_samplesheet // channel: samplesheet read in from --input
-    val_umi_dedup // value
     multiqc_config
     multiqc_logo
     multiqc_methods_description
@@ -50,6 +49,8 @@ workflow DXNEXTFLOWFP {
     ch_dbsnp_index = Channel.fromPath("${params.dbsnp}.tbi").map{ file -> [file.getSimpleName(), file] }.collect()
     ch_intervals = Channel.fromPath("${params.intervals}").map{ file -> [file.getSimpleName(), file] }.collect()
 
+    val_umi_dedup = params.val_umi_dedup
+    
     ///
     /// Workflow
     ///
@@ -74,7 +75,6 @@ workflow DXNEXTFLOWFP {
 
     //UMI dedup
     if (val_umi_dedup){
-        
         BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS(ch_bam_bai, true, false)
         ch_bam = BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS.out.bam
         ch_bam_index = BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS.out.index

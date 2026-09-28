@@ -37,7 +37,6 @@ workflow UMCUGENETICS_DXNEXTFLOWFP {
     //
     DXNEXTFLOWFP (
         samplesheet,
-        params.val_umi_dedup,
         params.multiqc_config,
         params.multiqc_logo,
         params.multiqc_methods_description,
