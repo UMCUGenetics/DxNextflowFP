@@ -6,8 +6,8 @@
             "subworkflows": {
                 "UMCUGenetics": {
                     "bam_variantcalling_intervals": {
-                        "branch": "feature/fingerprint",
-                        "git_sha": "7bae1600aa5ac67940ce50cf9658c23d0c0497c7",
+                        "branch": "main",
+                        "git_sha": "936de21d5e739b3756e3e22da357afb7cd6ff052",
                         "installed_by": ["subworkflows"]
                     }
                 }

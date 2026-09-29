@@ -45,20 +45,19 @@ nextflow_workflow {
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai",
                         checkIfExists: true)
                 ])
-                input[2] = Channel.of([[id: "genome"],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.fasta", checkIfExists: true)]).first()
-                input[3] = Channel.of([[id: "genome"],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.fasta.fai", checkIfExists: true)]).first()
-                input[4] = Channel.of([[id: "genome"],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.dict", checkIfExists: true)]).first()
-                input[5] = Channel.of([[id: "intervals"],
+                input[2] = Channel.value([[id: "genome"],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.fasta", checkIfExists: true)])
+                input[3] = Channel.value([[id: "genome"],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.fasta.fai", checkIfExists: true)])
+                input[4] = Channel.value([[id: "genome"],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.dict", checkIfExists: true)])
+                input[5] = Channel.value([[id: "intervals"],
                     file(params.subworkflows_umcu_testdata_base_path + "bam_fp/bam_fp_test.interval_list", checkIfExists: true)])
 
-                input[6] = Channel.of([[id: "dbsnp"],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/vcf/dbsnp_146.hg38.vcf.gz",checkIfExists: true)]).first()
-                input[7] = Channel.of([[id: "dbsnp"],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/vcf/dbsnp_146.hg38.vcf.gz.tbi",checkIfExists: true)]).first()
-
+                input[6] = Channel.value([[id: "dbsnp"],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/vcf/dbsnp_146.hg38.vcf.gz",checkIfExists: true)])
+                input[7] = Channel.value([[id: "dbsnp"],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/vcf/dbsnp_146.hg38.vcf.gz.tbi",checkIfExists: true)])
                 """
             }
         }
