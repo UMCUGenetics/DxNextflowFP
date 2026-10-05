@@ -58,17 +58,19 @@ workflow DXNEXTFLOWFP {
     FASTQC(ch_samplesheet)
     TRIMGALORE(ch_samplesheet)
     BWAMEM2_MEM(TRIMGALORE.out.reads, ch_bwa_index, ch_genome_fasta, true)
-    BWAMEM2_MEM.out.bam
+    
+    ch_bams_fixed_meta = BWAMEM2_MEM.out.bam
+        .view()
         .map{ meta, bam -> [ meta - meta.subMap('rg_id', 'flowcell'), bam ] }
-        .groupTuple().branch{
-            single: it[1].size() == 1
-            multiple: it[1].size() > 1
-            }
-        .set{ bams }
+        .groupTuple()
+    ch_bams_fixed_meta_single = ch_bams_fixed_meta.filter{ meta, bam -> bam.size() == 1 }
+    ch_bams_fixed_meta_multi = ch_bams_fixed_meta.filter{ meta, bam -> bam.size() > 1 }
+    
+
  
     // If there are no samples to merge, skip MERGE process.
-    SAMTOOLS_MERGE(bams.multiple, ch_genome_fasta.join(ch_genome_fasta_index), "bai")
-    prepared_bam = bams.single.mix(SAMTOOLS_MERGE.out.bam)
+    SAMTOOLS_MERGE(ch_bams_fixed_meta_multi, ch_genome_fasta.join(ch_genome_fasta_index), "bai")
+    prepared_bam = ch_bams_fixed_meta_single.mix(SAMTOOLS_MERGE.out.bam)
 
     SAMTOOLS_INDEX(prepared_bam)
     
