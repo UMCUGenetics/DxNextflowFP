@@ -61,7 +61,6 @@ workflow DXNEXTFLOWFP {
     BWAMEM2_MEM(TRIMGALORE.out.reads, ch_bwa_index, ch_genome_fasta, true)
     
     ch_bams_fixed_meta = BWAMEM2_MEM.out.bam
-        .view()
         .map{ meta, bam -> [ meta - meta.subMap('rg_id', 'flowcell'), bam ] }
         .groupTuple()
     ch_bams_fixed_meta_single = ch_bams_fixed_meta.filter{ meta, bam -> bam.size() == 1 }
