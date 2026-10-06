@@ -7,6 +7,7 @@
 include { BWAMEM2_MEM                           } from '../modules/nf-core/bwamem2/mem/main'
 include { FASTQC                                } from '../modules/nf-core/fastqc/main'
 include { MULTIQC                               } from '../modules/nf-core/multiqc/main'
+include { PUBLISH_BAM_BAI                       } from '../modules/local/publish_bam_bai/main'
 include { SAMTOOLS_INDEX                        } from '../modules/nf-core/samtools/index/main'
 include { SAMTOOLS_MERGE                        } from '../modules/nf-core/samtools/merge/main'
 include { TRIMGALORE                            } from '../modules/nf-core/trimgalore/main'
@@ -76,6 +77,7 @@ workflow DXNEXTFLOWFP {
     
     // Combine bam and bai for stats/dedup subworkflows.
     ch_bam_bai = prepared_bam.join(SAMTOOLS_INDEX.out.index)
+    PUBLISH_BAM_BAI(ch_bam_bai)
 
     //UMI dedup
     if (val_umi_dedup){
