@@ -1,0 +1,221 @@
+{
+    "-profile test": {
+        "content": [
+            {
+                "BWAMEM2_MEM": {
+                    "bwamem2": "2.2.1",
+                    "samtools": "1.22.1"
+                },
+                "FASTQC": {
+                    "fastqc": "0.12.1"
+                },
+                "GATK4_GENOTYPEGVCFS": {
+                    "gatk4": "4.7.0.0"
+                },
+                "GATK4_HAPLOTYPECALLER": {
+                    "gatk4": "4.7.0.0"
+                },
+                "SAMTOOLS_FLAGSTAT": {
+                    "samtools": 1.24
+                },
+                "SAMTOOLS_IDXSTATS": {
+                    "samtools": 1.24
+                },
+                "SAMTOOLS_INDEX": {
+                    "samtools": 1.24
+                },
+                "SAMTOOLS_STATS": {
+                    "samtools": 1.24
+                },
+                "TRIMGALORE": {
+                    "trimgalore": "2.3.0"
+                },
+                "UMITOOLS_DEDUP": {
+                    "umitools": "1.1.6"
+                },
+                "Workflow": {
+                    "UMCUGenetics/dxnextflowfp": "v1.0.0dev"
+                }
+            },
+            [
+                "QC",
+                "QC/fastqc",
+                "QC/fastqc/YSTR-2800M_1_fastqc.html",
+                "QC/fastqc/YSTR-2800M_2_fastqc.html",
+                "QC/fastqc/dup2-2800m_1_fastqc.html",
+                "QC/fastqc/dup2-2800m_2_fastqc.html",
+                "QC/multiqc_data",
+                "QC/multiqc_data/fastqc-status-check-heatmap.txt",
+                "QC/multiqc_data/fastqc_adapter_content_plot.txt",
+                "QC/multiqc_data/fastqc_overrepresented_sequences_plot.txt",
+                "QC/multiqc_data/fastqc_per_base_n_content_plot.txt",
+                "QC/multiqc_data/fastqc_per_base_sequence_quality_plot.txt",
+                "QC/multiqc_data/fastqc_per_sequence_gc_content_plot_Counts.txt",
+                "QC/multiqc_data/fastqc_per_sequence_gc_content_plot_Percentages.txt",
+                "QC/multiqc_data/fastqc_per_sequence_quality_scores_plot.txt",
+                "QC/multiqc_data/fastqc_sequence_counts_plot.txt",
+                "QC/multiqc_data/fastqc_sequence_duplication_levels_plot.txt",
+                "QC/multiqc_data/fastqc_sequence_length_distribution_plot.txt",
+                "QC/multiqc_data/fastqc_top_overrepresented_sequences_table.txt",
+                "QC/multiqc_data/llms-full.txt",
+                "QC/multiqc_data/multiqc.log",
+                "QC/multiqc_data/multiqc.parquet",
+                "QC/multiqc_data/multiqc_citations.txt",
+                "QC/multiqc_data/multiqc_data.json",
+                "QC/multiqc_data/multiqc_fastqc.txt",
+                "QC/multiqc_data/multiqc_general_stats.txt",
+                "QC/multiqc_data/multiqc_samtools_flagstat.txt",
+                "QC/multiqc_data/multiqc_samtools_idxstats.txt",
+                "QC/multiqc_data/multiqc_samtools_stats.txt",
+                "QC/multiqc_data/multiqc_software_versions.txt",
+                "QC/multiqc_data/multiqc_sources.txt",
+                "QC/multiqc_data/multiqc_umitools_dedup.txt",
+                "QC/multiqc_data/multiqc_umitools_extract.txt",
+                "QC/multiqc_data/samtools-flagstat-pct-table.txt",
+                "QC/multiqc_data/samtools-flagstat-table.txt",
+                "QC/multiqc_data/samtools-idxstats-mapped-reads-plot_Normalised_Counts.txt",
+                "QC/multiqc_data/samtools-idxstats-mapped-reads-plot_Observed_over_Expected_Counts.txt",
+                "QC/multiqc_data/samtools-idxstats-mapped-reads-plot_Raw_Counts.txt",
+                "QC/multiqc_data/samtools-stats-dp.txt",
+                "QC/multiqc_data/samtools_alignment_plot.txt",
+                "QC/multiqc_data/samtools_insert_size.txt",
+                "QC/multiqc_data/umitools_deduplication_barplot.txt",
+                "QC/multiqc_data/umitools_stats_violin.txt",
+                "QC/multiqc_report.html",
+                "QC/samtools",
+                "QC/samtools/YSTR-2800M.flagstat",
+                "QC/samtools/YSTR-2800M.idxstats",
+                "QC/samtools/YSTR-2800M.stats",
+                "QC/samtools/dup2-2800m.flagstat",
+                "QC/samtools/dup2-2800m.idxstats",
+                "QC/samtools/dup2-2800m.stats",
+                "QC/trimgalore",
+                "QC/trimgalore/YSTR-2800M_1.fastq.gz_trimming_report.json",
+                "QC/trimgalore/YSTR-2800M_1.fastq.gz_trimming_report.txt",
+                "QC/trimgalore/YSTR-2800M_2.fastq.gz_trimming_report.json",
+                "QC/trimgalore/YSTR-2800M_2.fastq.gz_trimming_report.txt",
+                "QC/trimgalore/dup2-2800m_1.fastq.gz_trimming_report.json",
+                "QC/trimgalore/dup2-2800m_1.fastq.gz_trimming_report.txt",
+                "QC/trimgalore/dup2-2800m_2.fastq.gz_trimming_report.json",
+                "QC/trimgalore/dup2-2800m_2.fastq.gz_trimming_report.txt",
+                "QC/umitools",
+                "QC/umitools/YSTR-2800M_dedup.log",
+                "QC/umitools/YSTR-2800M_dedup_edit_distance.tsv",
+                "QC/umitools/YSTR-2800M_dedup_per_umi.tsv",
+                "QC/umitools/YSTR-2800M_dedup_per_umi_per_position.tsv",
+                "QC/umitools/dup2-2800m_dedup.log",
+                "QC/umitools/dup2-2800m_dedup_edit_distance.tsv",
+                "QC/umitools/dup2-2800m_dedup_per_umi.tsv",
+                "QC/umitools/dup2-2800m_dedup_per_umi_per_position.tsv",
+                "pipeline_info",
+                "pipeline_info/dxnextflowfp_software_mqc_versions.yml",
+                "unfiltered_bams",
+                "unfiltered_bams/null_YSTR-2800M.bam",
+                "unfiltered_bams/null_YSTR-2800M.bam.bai",
+                "unfiltered_bams/null_dup2-2800m.bam",
+                "unfiltered_bams/null_dup2-2800m.bam.bai",
+                "vcf",
+                "vcf/YSTR-2800M.vcf.gz",
+                "vcf/YSTR-2800M.vcf.gz.tbi",
+                "vcf/dup2-2800m.vcf.gz",
+                "vcf/dup2-2800m.vcf.gz.tbi",
+                "vcf/gatk4_haplo",
+                "vcf/gatk4_haplo/YSTR-2800M.g.vcf.gz",
+                "vcf/gatk4_haplo/YSTR-2800M.g.vcf.gz.tbi",
+                "vcf/gatk4_haplo/dup2-2800m.g.vcf.gz",
+                "vcf/gatk4_haplo/dup2-2800m.g.vcf.gz.tbi"
+            ],
+            [
+                "YSTR-2800M_1_fastqc.html:md5,7d67bc5e384c544714dc46d5d02eba7c",
+                "YSTR-2800M_2_fastqc.html:md5,d58bd588e094fc57abeecf123c2b1760",
+                "dup2-2800m_1_fastqc.html:md5,6ce97c051fff1c76366fadd3237cdbe0",
+                "dup2-2800m_2_fastqc.html:md5,5478dbf6ce70f93992ce7fce98eb4d15",
+                "fastqc-status-check-heatmap.txt:md5,f8413482a1b4c186010b27cf432c61f5",
+                "fastqc_adapter_content_plot.txt:md5,3d83b95b268da307884af7f9d8fd4830",
+                "fastqc_overrepresented_sequences_plot.txt:md5,4e974b9e6ac07b5da57ae13f9b9bc46d",
+                "fastqc_per_base_n_content_plot.txt:md5,428dd864b2c9fb6a6743128bcbc4ded0",
+                "fastqc_per_base_sequence_quality_plot.txt:md5,f77ea3f066a14fbd24718c75a9c10bf4",
+                "fastqc_per_sequence_gc_content_plot_Counts.txt:md5,63472caa2ed67a84712074085396738c",
+                "fastqc_per_sequence_gc_content_plot_Percentages.txt:md5,a7fc62adf9fb53097130dbac56b93725",
+                "fastqc_per_sequence_quality_scores_plot.txt:md5,d4f16000c33abd48991673ebdadde3ef",
+                "fastqc_sequence_counts_plot.txt:md5,8fd82cb2d3cc281994d1cfe45f25b5ef",
+                "fastqc_sequence_duplication_levels_plot.txt:md5,e4631374d16fba3be22917e4625485cc",
+                "fastqc_sequence_length_distribution_plot.txt:md5,da638c71bfff54c6f9c02e1ee5de3226",
+                "fastqc_top_overrepresented_sequences_table.txt:md5,863ddac53716a206db214c74c8855ff2",
+                "multiqc_citations.txt:md5,4f79efb1c9b2cd193620ffbe0c5e2bfb",
+                "multiqc_fastqc.txt:md5,43fdb556e9e24dfb16ce9107e51cdda5",
+                "multiqc_general_stats.txt:md5,5d0c673834e6d20c37b1161a4fe25627",
+                "multiqc_samtools_flagstat.txt:md5,c6cf8a67ad9c6699585713f2618e88f7",
+                "multiqc_samtools_idxstats.txt:md5,f09835f44ba0fd38956bee96513062e8",
+                "multiqc_samtools_stats.txt:md5,eeaf55b3a391a81268dbd793c7a02735",
+                "multiqc_umitools_dedup.txt:md5,482146a1d67fde776a4a93cf16f478d6",
+                "multiqc_umitools_extract.txt:md5,d41d8cd98f00b204e9800998ecf8427e",
+                "samtools-flagstat-pct-table.txt:md5,650dc8828e0593d86fe838cb97211f93",
+                "samtools-flagstat-table.txt:md5,a75a3a91bcfac0af2513dd207a089eab",
+                "samtools-idxstats-mapped-reads-plot_Normalised_Counts.txt:md5,291775c027faebdc036958b5ef89c57c",
+                "samtools-idxstats-mapped-reads-plot_Observed_over_Expected_Counts.txt:md5,496f2a9880598af850b67427e53c1614",
+                "samtools-idxstats-mapped-reads-plot_Raw_Counts.txt:md5,54c12cd843d137710315fdba63398cc3",
+                "samtools-stats-dp.txt:md5,72aa7d094d7a1604f271e7411be0da68",
+                "samtools_alignment_plot.txt:md5,a20e24c1b42f017ee1aef20b6393e631",
+                "samtools_insert_size.txt:md5,64f711dc6d072dbbaa831ede5e958d97",
+                "umitools_deduplication_barplot.txt:md5,1ae499eff143038191fd215daf9bdd54",
+                "umitools_stats_violin.txt:md5,8aa55dfc27c69098be751442a7852782",
+                "YSTR-2800M.flagstat:md5,3309830aa695f908ddaa7dc9c8c04862",
+                "YSTR-2800M.idxstats:md5,3c6f8cb624ecce5e967aa1cc7fc9e559",
+                "YSTR-2800M.stats:md5,e97b17a4f0e306228f0ad15fda73b573",
+                "dup2-2800m.flagstat:md5,3309830aa695f908ddaa7dc9c8c04862",
+                "dup2-2800m.idxstats:md5,3c6f8cb624ecce5e967aa1cc7fc9e559",
+                "dup2-2800m.stats:md5,e95754ede9218e854f4c4b64f44f6117",
+                "YSTR-2800M_1.fastq.gz_trimming_report.json:md5,30f3c5649dc1ebe0c6ab866c7c10f16e",
+                "YSTR-2800M_1.fastq.gz_trimming_report.txt:md5,d73ea3b157d9f9cfa705ac21730e5aa1",
+                "YSTR-2800M_2.fastq.gz_trimming_report.json:md5,58ebb199b72cc3ae28cae12523ce2399",
+                "YSTR-2800M_2.fastq.gz_trimming_report.txt:md5,8dab0a9c885fe07879b646f938029a5d",
+                "dup2-2800m_1.fastq.gz_trimming_report.json:md5,0358cdc0ffe9a2a2f23842e2fe7475ac",
+                "dup2-2800m_1.fastq.gz_trimming_report.txt:md5,044a2ac563fa5c92fdbb5dc344b53ee9",
+                "dup2-2800m_2.fastq.gz_trimming_report.json:md5,5aaed250315cbb37b12bc42f41c1623a",
+                "dup2-2800m_2.fastq.gz_trimming_report.txt:md5,354c2c0bef37c32ef1f8d0d48cc6fc04",
+                "YSTR-2800M_dedup_edit_distance.tsv:md5,3f4b358e3a86ef68fe75cf319ba4e75f",
+                "YSTR-2800M_dedup_per_umi.tsv:md5,45d010ad08bb13e70c88619e3213cb05",
+                "YSTR-2800M_dedup_per_umi_per_position.tsv:md5,20e4a454791df32ca5d9c1e86ef80830",
+                "dup2-2800m_dedup_edit_distance.tsv:md5,3f4b358e3a86ef68fe75cf319ba4e75f",
+                "dup2-2800m_dedup_per_umi.tsv:md5,45d010ad08bb13e70c88619e3213cb05",
+                "dup2-2800m_dedup_per_umi_per_position.tsv:md5,20e4a454791df32ca5d9c1e86ef80830",
+                "null_YSTR-2800M.bam:md5,bb48984f6faa88b20183ddd6b46f635f",
+                "null_YSTR-2800M.bam.bai:md5,c5d8c77d6c207552f4a24acb4b53e1a4",
+                "null_dup2-2800m.bam:md5,4d263298169d287fe362ee72db66b54f",
+                "null_dup2-2800m.bam.bai:md5,065a0d414439343d95fbc1640120b0bc",
+                "YSTR-2800M.vcf.gz.tbi:md5,3f52aeeb890c8aa0c0775cba6f396376",
+                "dup2-2800m.vcf.gz.tbi:md5,7a0b8d96cddd8a5a9f375d228ba7d163",
+                "YSTR-2800M.g.vcf.gz.tbi:md5,213f1ba65e1a20e384f8c528e7de22d5",
+                "dup2-2800m.g.vcf.gz.tbi:md5,eb26ae04b9769185efcd3428d90cd3a4"
+            ],
+            [
+                [
+                    "vcf/YSTR-2800M.vcf.gz",
+                    "64c1cf0dba7df996ebd0d5aca2113b68",
+                    "VcfFile [chromosomes=[chrY, chr11, chr22], sampleCount=1, variantCount=3, phased=false, phasedAutodetect=false]"
+                ],
+                [
+                    "vcf/dup2-2800m.vcf.gz",
+                    "64c1cf0dba7df996ebd0d5aca2113b68",
+                    "VcfFile [chromosomes=[chrY, chr11, chr22], sampleCount=1, variantCount=3, phased=false, phasedAutodetect=false]"
+                ],
+                [
+                    "vcf/gatk4_haplo/YSTR-2800M.g.vcf.gz",
+                    "8dab71f32e8bb09668b3e1997cef9ef3",
+                    "VcfFile [chromosomes=[chrY, chr11, chr22], sampleCount=1, variantCount=3, phased=false, phasedAutodetect=false]"
+                ],
+                [
+                    "vcf/gatk4_haplo/dup2-2800m.g.vcf.gz",
+                    "8dab71f32e8bb09668b3e1997cef9ef3",
+                    "VcfFile [chromosomes=[chrY, chr11, chr22], sampleCount=1, variantCount=3, phased=false, phasedAutodetect=false]"
+                ]
+            ]
+        ],
+        "timestamp": "2026-10-06T12:34:48.011562",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
+    }
+}

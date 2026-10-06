@@ -8,5 +8,6 @@ QC/multiqc_data/llms-full.txt
 QC/multiqc_plots/{svg,pdf,png}/*.{svg,pdf,png}
 QC/multiqc_report.html
 pipeline_info/*.{html,json,txt,yml}
-vcf_files/*
-GATK4/*
+vcf/*.vcf.gz
+vcf/gatk4_haplo/*.vcf.gz
+QC/umitools/*.log
