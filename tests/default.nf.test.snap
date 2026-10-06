@@ -183,11 +183,7 @@
                 "null_YSTR-2800M.bam:md5,bb48984f6faa88b20183ddd6b46f635f",
                 "null_YSTR-2800M.bam.bai:md5,c5d8c77d6c207552f4a24acb4b53e1a4",
                 "null_dup2-2800m.bam:md5,4d263298169d287fe362ee72db66b54f",
-                "null_dup2-2800m.bam.bai:md5,065a0d414439343d95fbc1640120b0bc",
-                "YSTR-2800M.vcf.gz.tbi:md5,3f52aeeb890c8aa0c0775cba6f396376",
-                "dup2-2800m.vcf.gz.tbi:md5,7a0b8d96cddd8a5a9f375d228ba7d163",
-                "YSTR-2800M.g.vcf.gz.tbi:md5,213f1ba65e1a20e384f8c528e7de22d5",
-                "dup2-2800m.g.vcf.gz.tbi:md5,eb26ae04b9769185efcd3428d90cd3a4"
+                "null_dup2-2800m.bam.bai:md5,065a0d414439343d95fbc1640120b0bc"
             ],
             [
                 [
@@ -212,7 +208,7 @@
                 ]
             ]
         ],
-        "timestamp": "2026-10-06T12:34:48.011562",
+        "timestamp": "2026-10-06T12:47:16.365934",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.6"
