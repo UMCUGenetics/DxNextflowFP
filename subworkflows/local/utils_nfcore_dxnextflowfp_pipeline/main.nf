@@ -31,7 +31,7 @@ workflow PIPELINE_INITIALISATION {
     monochrome_logs   // boolean: Do not use coloured log outputs
     nextflow_cli_args //   array: List of positional nextflow CLI args
     outdir            //  string: The output directory where the results will be saved
-    input             //  string: Path to input samplesheet
+    input_dir         //  string: The input directory where the input fastq files are located
     help              // boolean: Display help message and exit
     help_full         // boolean: Show the full help message
     show_hidden       // boolean: Show hidden parameters in the help message
@@ -83,32 +83,19 @@ workflow PIPELINE_INITIALISATION {
     )
 
     //
-    // Create channel from input file provided through params.input
+    // Create channel from input file provided through params.input_dir
     //
 
-    channel
-        .fromList(samplesheetToList(input, "${projectDir}/assets/schema_input.json"))
-        .map {
-            meta, fastq_1, fastq_2 ->
-                if (!fastq_2) {
-                    return [ meta.id, meta + [ single_end:true ], [ fastq_1 ] ]
-                } else {
-                    return [ meta.id, meta + [ single_end:false ], [ fastq_1, fastq_2 ] ]
-                }
+    ch_sample_fastqs = channel.fromFilePairs("${input_dir}/*_R{1,2}_001.fastq.gz")
+        .map { fastq_name, fastq_file ->
+            [[id: fastq_name, name: fastq_name.split('_')[0]], fastq_file ]
         }
         .groupTuple()
-        .map { samplesheet ->
-            validateInputSamplesheet(samplesheet)
-        }
-        .map {
-            meta, fastqs ->
-                return [ meta, fastqs.flatten() ]
-        }
-        .set { ch_samplesheet }
+        .map { meta, reads -> [ meta, reads.flatten() ] }
 
     emit:
-    samplesheet = ch_samplesheet
-    versions    = ch_versions
+    ch_sample_fastqs    = ch_sample_fastqs
+    versions            = ch_versions
 }
 
 /*

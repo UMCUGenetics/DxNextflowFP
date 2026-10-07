@@ -28,7 +28,7 @@ include { PIPELINE_COMPLETION     } from './subworkflows/local/utils_nfcore_dxne
 workflow UMCUGENETICS_DXNEXTFLOWFP {
 
     take:
-    samplesheet // channel: samplesheet read in from --input
+    ch_sample_fastqs // channel: samplesheet read in from --input
 
     main:
 
@@ -36,7 +36,7 @@ workflow UMCUGENETICS_DXNEXTFLOWFP {
     // WORKFLOW: Run pipeline
     //
     DXNEXTFLOWFP (
-        samplesheet,
+        ch_sample_fastqs,
         params.multiqc_config,
         params.multiqc_logo,
         params.multiqc_methods_description,
@@ -63,7 +63,7 @@ workflow {
         params.monochrome_logs,
         args,
         params.outdir,
-        params.input,
+        params.input_dir,
         params.help,
         params.help_full,
         params.show_hidden
@@ -73,7 +73,7 @@ workflow {
     // WORKFLOW: Run main workflow
     //
     UMCUGENETICS_DXNEXTFLOWFP (
-        PIPELINE_INITIALISATION.out.samplesheet
+        PIPELINE_INITIALISATION.out.ch_sample_fastqs
     )
     //
     // SUBWORKFLOW: Run completion tasks

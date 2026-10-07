@@ -7,7 +7,6 @@
 include { BWAMEM2_MEM                           } from '../modules/nf-core/bwamem2/mem/main'
 include { FASTQC                                } from '../modules/nf-core/fastqc/main'
 include { MULTIQC                               } from '../modules/nf-core/multiqc/main'
-include { PUBLISH_BAM_BAI                       } from '../modules/local/publish_bam_bai/main'
 include { SAMTOOLS_INDEX                        } from '../modules/nf-core/samtools/index/main'
 include { SAMTOOLS_MERGE                        } from '../modules/nf-core/samtools/merge/main'
 include { TRIMGALORE                            } from '../modules/nf-core/trimgalore/main'
@@ -30,7 +29,7 @@ include { softwareVersionsToYAML                } from '../subworkflows/nf-core/
 workflow DXNEXTFLOWFP {
 
     take:
-    ch_samplesheet // channel: samplesheet read in from --input
+    ch_fastq // channel: samplesheet read in from --input
     multiqc_config
     multiqc_logo
     multiqc_methods_description
@@ -40,47 +39,52 @@ workflow DXNEXTFLOWFP {
     ///
     /// Define variables, channels and values.
     ///
+
+    def createMetaWithIdSimpleName = { file -> [[id: file.getSimpleName()], file] }
     def ch_versions         = channel.empty() // MultiQC
     def ch_multiqc_files    = channel.empty()
 
-    ch_genome_fasta         = Channel.fromPath("${params.genome_fasta}").map{ file -> [file.getSimpleName(), file] }.collect()
-    ch_genome_fasta_index   = Channel.fromPath("${params.genome_fasta}.fai").map{ file -> [file.getSimpleName(), file] }.collect()
-    ch_genome_dict          = Channel.fromPath("${params.genome_dict}").map{ file -> [file.getSimpleName(), file] }.collect()
+    ch_genome_fasta         = Channel.value(file("${params.genome_fasta}")).map(createMetaWithIdSimpleName)
+    ch_genome_fasta_index   = Channel.value(file("${params.genome_fasta}.fai")).map(createMetaWithIdSimpleName)
+    ch_genome_dict          = Channel.value(file("${params.genome_dict}")).map(createMetaWithIdSimpleName)
     ch_bwa_index            = Channel.fromPath("${params.bwa_index}*").map{ file -> [file.getSimpleName(), file] }.groupTuple().collect()
-    ch_dbsnp                = Channel.fromPath("${params.dbsnp}").map{ file -> [file.getSimpleName(), file] }.collect()
-    ch_dbsnp_index          = Channel.fromPath("${params.dbsnp}.tbi").map{ file -> [file.getSimpleName(), file] }.collect()
-    ch_intervals            = Channel.fromPath("${params.intervals}").map{ file -> [file.getSimpleName(), file] }.collect()
+    ch_dbsnp                = Channel.value(file("${params.dbsnp}")).map(createMetaWithIdSimpleName)
+    ch_dbsnp_index          = Channel.value(file("${params.dbsnp}.tbi")).map(createMetaWithIdSimpleName)
+    ch_intervals            = Channel.value(file("${params.intervals}")).map(createMetaWithIdSimpleName)
 
     val_umi_dedup           = params.val_umi_dedup
     
     ///
     /// Workflow
     ///
-    FASTQC(ch_samplesheet)
-    TRIMGALORE(ch_samplesheet)
+
+    FASTQC(ch_fastq)
+    TRIMGALORE(ch_fastq)
+
     BWAMEM2_MEM(TRIMGALORE.out.reads, ch_bwa_index, ch_genome_fasta, true)
-    
-    ch_bams_fixed_meta = BWAMEM2_MEM.out.bam
-        .map{ meta, bam -> [ meta - meta.subMap('rg_id', 'flowcell'), bam ] }
-        .groupTuple()
-    ch_bams_fixed_meta_single = ch_bams_fixed_meta.filter{ meta, bam -> bam.size() == 1 }
-    ch_bams_fixed_meta_multi = ch_bams_fixed_meta.filter{ meta, bam -> bam.size() > 1 }
-    
-
- 
-    // If there are no samples to merge, skip MERGE process.
-    SAMTOOLS_MERGE(ch_bams_fixed_meta_multi, ch_genome_fasta.join(ch_genome_fasta_index), "bai")
-    prepared_bam = ch_bams_fixed_meta_single.mix(SAMTOOLS_MERGE.out.bam)
-
-    SAMTOOLS_INDEX(prepared_bam)
+    SAMTOOLS_INDEX(BWAMEM2_MEM.out.bam)
     
     // Combine bam and bai for stats/dedup subworkflows.
-    ch_bam_bai = prepared_bam.join(SAMTOOLS_INDEX.out.index)
-    PUBLISH_BAM_BAI(ch_bam_bai)
+    ch_bam_bai = BWAMEM2_MEM.out.bam
+        .join(SAMTOOLS_INDEX.out.index)
+        // Remove lane info. Not required anymore for downstream analyses.
+        .map{ meta, bam, bai -> [ [id: meta.name], bam, bai ] }
+        .groupTuple()
+    // Combine reference fasta and fai into value channel for merging process.
+    ch_ref_index = Channel.value([
+        [id: 'genome'],
+        file(params.genome_fasta),
+        file("${params.genome_fasta}.fai"),
+        []
+    ])
+
+    SAMTOOLS_MERGE(ch_bam_bai, ch_ref_index, "bai")
+
+    ch_merged_bam_bai = SAMTOOLS_MERGE.out.bam.join(SAMTOOLS_MERGE.out.index)
 
     //UMI dedup
     if (val_umi_dedup){
-        BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS(ch_bam_bai, true, false)
+        BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS(ch_merged_bam_bai, true, false)
         ch_bam = BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS.out.bam
         ch_bam_index = BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS.out.index
         ch_multiqc_files = ch_multiqc_files
@@ -89,9 +93,9 @@ workflow DXNEXTFLOWFP {
             .mix(BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS.out.flagstat.map{ _meta, file -> file })
             .mix(BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS.out.idxstats.map{ _meta, file -> file })
     } else {
-        ch_bam = prepared_bam
-        ch_bam_index = SAMTOOLS_INDEX.out.index
-        BAM_STATS_SAMTOOLS(ch_bam_bai , [[:], [], []])
+        ch_bam = SAMTOOLS_MERGE.out.bam
+        ch_bam_index = SAMTOOLS_MERGE.out.index
+        BAM_STATS_SAMTOOLS(ch_merged_bam_bai , [[:], [], []])
         ch_multiqc_files = ch_multiqc_files
             .mix(BAM_STATS_SAMTOOLS.out.stats.map{ _meta, file -> file })
             .mix(BAM_STATS_SAMTOOLS.out.flagstat.map{ _meta, file -> file })
