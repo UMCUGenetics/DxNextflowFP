@@ -17,12 +17,20 @@ nextflow_pipeline {
             def stable_path = getAllFilesFromDir(params.outdir, relative: true, includeDir: true, ignore: ['pipeline_info/*.{html,json,txt}'])
             // stable_content: All files in ${params.outdir}/ with stable content
             def stable_content = getAllFilesFromDir(params.outdir, ignoreFile: 'tests/.nftignore')
+            def stable_bam = getAllFilesFromDir(params.outdir, relative: true).findAll { it.endsWith('.bam') }.collect { file ->
+                def bam_path = "${params.outdir}/${file}"
+                    [
+                        file        : file,
+                        sam_md5  : bam(bam_path).getSamLinesMD5(),
+                        stats       : bam(bam_path).getStatistics()
+                    ]
+                }
             def stable_vcf = getAllFilesFromDir(params.outdir, relative: true).findAll { it.endsWith('.vcf.gz') }.collect { file ->
                 def vcf = path("${params.outdir}/${file}").vcf
                     [
-                        file,
-                        vcf.variantsMD5,
-                        vcf.summary
+                        file                : file,
+                        variants_md5        : vcf.variantsMD5,
+                        varaiants_summary   : vcf.summary
                     ]
                 }
             assert workflow.success
@@ -34,6 +42,7 @@ nextflow_pipeline {
                     stable_path,
                     // All files with stable contents
                     stable_content,
+                    stable_bam,
                     stable_vcf
                 ).match() }
             )

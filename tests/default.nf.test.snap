@@ -7,7 +7,7 @@
                     "samtools": "1.22.1"
                 },
                 "FASTQC": {
-                    "fastqc": "0.12.1"
+                    "fastqc": "0.13.0"
                 },
                 "GATK4_GENOTYPEGVCFS": {
                     "gatk4": "4.7.0.0"
@@ -119,12 +119,10 @@
                 "pipeline_info",
                 "pipeline_info/dxnextflowfp_software_mqc_versions.yml",
                 "unfiltered_bams",
-                "unfiltered_bams/YSTR-2800M_FastQ_S01_L001.bam",
-                "unfiltered_bams/YSTR-2800M_FastQ_S01_L001.bam.bai",
-                "unfiltered_bams/YSTR-2800M_FastQ_S01_L002.bam",
-                "unfiltered_bams/YSTR-2800M_FastQ_S01_L002.bam.bai",
-                "unfiltered_bams/dup2-2800M_FastQ_S02_L001.bam",
-                "unfiltered_bams/dup2-2800M_FastQ_S02_L001.bam.bai",
+                "unfiltered_bams/YSTR-2800M_merge.bam",
+                "unfiltered_bams/YSTR-2800M_merge.bam.bai",
+                "unfiltered_bams/dup2-2800M_merge.bam",
+                "unfiltered_bams/dup2-2800M_merge.bam.bai",
                 "vcf",
                 "vcf/YSTR-2800M.vcf.gz",
                 "vcf/YSTR-2800M.vcf.gz.tbi",
@@ -137,15 +135,15 @@
                 "vcf/gatk4_haplo/dup2-2800M.g.vcf.gz.tbi"
             ],
             [
-                "YSTR-2800M_FastQ_S01_L001_1_fastqc.html:md5,b2031d94885a76670be2e07885fc02f7",
-                "YSTR-2800M_FastQ_S01_L001_2_fastqc.html:md5,4f3730b7a4afb1496c0d87239b66932e",
-                "YSTR-2800M_FastQ_S01_L002_1_fastqc.html:md5,db4930090fadf52e3b0fef75f43bb896",
-                "YSTR-2800M_FastQ_S01_L002_2_fastqc.html:md5,fa348ad9f7a15dc485c04080d67d4794",
-                "dup2-2800M_FastQ_S02_L001_1_fastqc.html:md5,9d41646464246a528300ad19c255f6f7",
-                "dup2-2800M_FastQ_S02_L001_2_fastqc.html:md5,03b58a735a623332c729367cf3c9c3ff",
+                "YSTR-2800M_FastQ_S01_L001_1_fastqc.html:md5,672d5f62b64b14dae79163ff2bc79b68",
+                "YSTR-2800M_FastQ_S01_L001_2_fastqc.html:md5,13a5720093fbe595a531c5d1eaa8c2f4",
+                "YSTR-2800M_FastQ_S01_L002_1_fastqc.html:md5,594502a290b7776f1b2423d0ccd8d269",
+                "YSTR-2800M_FastQ_S01_L002_2_fastqc.html:md5,f69bbc2bf066a3f0107dc00800b7c9b6",
+                "dup2-2800M_FastQ_S02_L001_1_fastqc.html:md5,e59ec5ab4be142f01115df339f354058",
+                "dup2-2800M_FastQ_S02_L001_2_fastqc.html:md5,8caf90b6f4513d1e23dfdf9011f6123c",
                 "fastqc-status-check-heatmap.txt:md5,a8c8886da7842ed36344aac12787cedb",
                 "fastqc_adapter_content_plot.txt:md5,37a97344cda7daa90e158f3795a26368",
-                "fastqc_overrepresented_sequences_plot.txt:md5,9e7a29079f437920ae7eddea3ab0c288",
+                "fastqc_overrepresented_sequences_plot.txt:md5,ffba06efab5fedd428e98580643da6fe",
                 "fastqc_per_base_n_content_plot.txt:md5,59ea6043cffc58aa7f88e8d94833364f",
                 "fastqc_per_base_sequence_quality_plot.txt:md5,ad438847f7da30a8ff859bcb7df5bb7c",
                 "fastqc_per_sequence_gc_content_plot_Counts.txt:md5,16682d5b05d5a41db4174f97fbbe013e",
@@ -156,7 +154,7 @@
                 "fastqc_sequence_length_distribution_plot.txt:md5,97096282a39a746e4fdc5b86d17645e0",
                 "fastqc_top_overrepresented_sequences_table.txt:md5,1fe05c27a71d87c84a2908c84021d202",
                 "multiqc_citations.txt:md5,4f79efb1c9b2cd193620ffbe0c5e2bfb",
-                "multiqc_fastqc.txt:md5,70184eaa8b6ea68682bd7ddab506c892",
+                "multiqc_fastqc.txt:md5,fad46246eea7df79abc2cd4de56991bd",
                 "multiqc_general_stats.txt:md5,340f9d7f259fe3c232f9b76a962f3993",
                 "multiqc_samtools_flagstat.txt:md5,a25aeeb6fc3764fa8787eca3eff67ec0",
                 "multiqc_samtools_idxstats.txt:md5,449494f425e8fb68bcbd66261c81e9f0",
@@ -196,38 +194,64 @@
                 "YSTR-2800M_dedup_per_umi_per_position.tsv:md5,2a40cebd1a393c63695bbde941f120dc",
                 "dup2-2800M_dedup_edit_distance.tsv:md5,75e60d9a521b4a055b45a126b90c5074",
                 "dup2-2800M_dedup_per_umi.tsv:md5,8bbb6bc7a98e84be876b8f2ab41aa726",
-                "dup2-2800M_dedup_per_umi_per_position.tsv:md5,b429d78a23c76e68515e77b45a857ac4",
-                "YSTR-2800M_FastQ_S01_L001.bam:md5,d4fdd75c2f6ba5dad76b08904f5b9221",
-                "YSTR-2800M_FastQ_S01_L001.bam.bai:md5,949c624ad667896d9e5d136875963d59",
-                "YSTR-2800M_FastQ_S01_L002.bam:md5,c9d134c2aa0a2502eca4632808c6f74a",
-                "YSTR-2800M_FastQ_S01_L002.bam.bai:md5,5be9c0810d770da3f3a77c4cb72cc2a4",
-                "dup2-2800M_FastQ_S02_L001.bam:md5,034fbe20e8f65f8cb8e196a947d0d041",
-                "dup2-2800M_FastQ_S02_L001.bam.bai:md5,61343479a491b06a9b34f67ad2c7177a"
+                "dup2-2800M_dedup_per_umi_per_position.tsv:md5,b429d78a23c76e68515e77b45a857ac4"
             ],
             [
-                [
-                    "vcf/YSTR-2800M.vcf.gz",
-                    "f73fee6bb381b431bcc242d8bb47f5f2",
-                    "VcfFile [chromosomes=[chr22], sampleCount=1, variantCount=2, phased=false, phasedAutodetect=false]"
-                ],
-                [
-                    "vcf/dup2-2800M.vcf.gz",
-                    "f73fee6bb381b431bcc242d8bb47f5f2",
-                    "VcfFile [chromosomes=[chr22], sampleCount=1, variantCount=2, phased=false, phasedAutodetect=false]"
-                ],
-                [
-                    "vcf/gatk4_haplo/YSTR-2800M.g.vcf.gz",
-                    "92465fb150f0257264c200f8e4cde2c9",
-                    "VcfFile [chromosomes=[chr22], sampleCount=1, variantCount=2, phased=false, phasedAutodetect=false]"
-                ],
-                [
-                    "vcf/gatk4_haplo/dup2-2800M.g.vcf.gz",
-                    "92465fb150f0257264c200f8e4cde2c9",
-                    "VcfFile [chromosomes=[chr22], sampleCount=1, variantCount=2, phased=false, phasedAutodetect=false]"
-                ]
+                {
+                    "file": "unfiltered_bams/YSTR-2800M_merge.bam",
+                    "sam_md5": "dde585abd411d353173fb2866544d633",
+                    "stats": {
+                        "maxReadLength": 151,
+                        "minReadLength": 26,
+                        "meanReadLength": 143,
+                        "maxQuality": 60,
+                        "minQuality": 0,
+                        "meanQuality": 2,
+                        "readCount": 780,
+                        "duplicateReadCount": 0,
+                        "sorted": false
+                    }
+                },
+                {
+                    "file": "unfiltered_bams/dup2-2800M_merge.bam",
+                    "sam_md5": "ba4363b62a260464f0b492974d88b9c9",
+                    "stats": {
+                        "maxReadLength": 151,
+                        "minReadLength": 26,
+                        "meanReadLength": 143,
+                        "maxQuality": 60,
+                        "minQuality": 0,
+                        "meanQuality": 2,
+                        "readCount": 390,
+                        "duplicateReadCount": 0,
+                        "sorted": false
+                    }
+                }
+            ],
+            [
+                {
+                    "file": "vcf/YSTR-2800M.vcf.gz",
+                    "variants_md5": "54984b62c7cb2e2b029552f6890fa1f0",
+                    "varaiants_summary": "VcfFile [chromosomes=[chr22], sampleCount=1, variantCount=2, phased=false, phasedAutodetect=false]"
+                },
+                {
+                    "file": "vcf/dup2-2800M.vcf.gz",
+                    "variants_md5": "54984b62c7cb2e2b029552f6890fa1f0",
+                    "varaiants_summary": "VcfFile [chromosomes=[chr22], sampleCount=1, variantCount=2, phased=false, phasedAutodetect=false]"
+                },
+                {
+                    "file": "vcf/gatk4_haplo/YSTR-2800M.g.vcf.gz",
+                    "variants_md5": "738e1ff93cef5ab273901a136e1b89b4",
+                    "varaiants_summary": "VcfFile [chromosomes=[chr22], sampleCount=1, variantCount=2, phased=false, phasedAutodetect=false]"
+                },
+                {
+                    "file": "vcf/gatk4_haplo/dup2-2800M.g.vcf.gz",
+                    "variants_md5": "738e1ff93cef5ab273901a136e1b89b4",
+                    "varaiants_summary": "VcfFile [chromosomes=[chr22], sampleCount=1, variantCount=2, phased=false, phasedAutodetect=false]"
+                }
             ]
         ],
-        "timestamp": "2026-10-07T16:52:46.824997",
+        "timestamp": "2026-10-09T17:08:39.222812",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.6"
