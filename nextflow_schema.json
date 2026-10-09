@@ -10,8 +10,13 @@
             "type": "object",
             "fa_icon": "fas fa-terminal",
             "description": "Define where the pipeline should find input data and save output data.",
-            "required": ["outdir"],
+            "required": ["input_dir", "outdir"],
             "properties": {
+                "input_dir": {
+                    "type": "string",
+                    "description": "The input directory containing fastq files",
+                    "fa_icon": "fas fa-folder-open"
+                },
                 "outdir": {
                     "type": "string",
                     "format": "directory-path",
@@ -47,28 +52,29 @@
                 "genome_fasta": {
                     "type": "string",
                     "fa_icon": "fas fa-user-tag",
-                    "description": "Path to genome in .fasta format."
+                    "description": "Path to genome in .fasta format.",
+                    "default": "/hpc/diaggen/data/databases/ref_genomes/Homo_sapiens.GRCh38.GCA_000001405.15/full_plus_hs38d1_analysis_set/GCA_000001405.15_GRCh38_full_plus_hs38d1_analysis_set.fna"
                 },
                 "genome_dict": {
                     "type": "string",
                     "fa_icon": "fas fa-user-tag",
-                    "description": "Path to genome.dict file."
+                    "description": "Path to genome.dict file.",
+                    "default": "/hpc/diaggen/data/databases/ref_genomes/Homo_sapiens.GRCh38.GCA_000001405.15/full_plus_hs38d1_analysis_set/GCA_000001405.15_GRCh38_full_plus_hs38d1_analysis_set.dict"
                 },
                 "bwa_index": {
                     "type": "string",
                     "fa_icon": "fas fa-database",
-                    "description": "Path to bwa-index folder."
+                    "description": "Path to bwa-index folder.",
+                    "default": "/hpc/diaggen/data/databases/ref_genomes/Homo_sapiens.GRCh38.GCA_000001405.15/full_plus_hs38d1_analysis_set/bwa-mem2/"
                 },
                 "dbsnp": {
                     "type": "string",
                     "fa_icon": "fas fa-database",
-                    "description": "Path to dbsnp file."
-                },
-                "cluster_options": {
-                    "type": "string",
-                    "default": "--mail-user null --mail-type FAIL --account=diaggen"
+                    "description": "Path to dbsnp file.",
+                    "default": "/hpc/diaggen/data/databases/GATK_resource_bundle/hg38/dbsnp_146.hg38.vcf.gz"
                 }
-            }
+            },
+            "required": ["intervals"]
         },
         "workflow_options": {
             "title": "Workflow options",
@@ -80,6 +86,22 @@
                     "type": "boolean",
                     "default": true,
                     "description": "Run pipeline with umitools dedup"
+                }
+            }
+        },
+        "hpc_options": {
+            "title": "HPC options",
+            "type": "object",
+            "description": "Options to set HPC specific parameters",
+            "default": "",
+            "properties": {
+                "cluster_options": {
+                    "type": "string",
+                    "default": "--mail-user null --mail-type FAIL --account=diaggen"
+                },
+                "cache_dir": {
+                    "type": "string",
+                    "default": "/hpc/diaggen/data/databases/Nextflow_cache/DxNextflowFP/null/"
                 }
             }
         },
@@ -245,15 +267,13 @@
             "$ref": "#/$defs/workflow_options"
         },
         {
+            "$ref": "#/$defs/hpc_options"
+        },
+        {
             "$ref": "#/$defs/institutional_config_options"
         },
         {
             "$ref": "#/$defs/generic_options"
         }
-    ],
-    "properties": {
-        "input_dir": {
-            "type": "string"
-        }
-    }
+    ]
 }
