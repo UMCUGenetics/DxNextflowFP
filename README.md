@@ -35,6 +35,13 @@ nextflow run UMCUGenetics/dxnextflowfp \
    [options]
 ```
 
+# nf-test
+Test data is located on the hpc in folder:
+```
+/hpc/diaggen/data/databases/testdata/DxNextflowFP/
+```
+Data can be downloaded locally to run nf-tests. If locally downloaded, please update parameter: `pipelines_umcu_local_testdata_base_path`
+
 > [!WARNING]
 > Please provide pipeline parameters via the CLI or Nextflow `-params-file` option. Custom config files including those provided by the `-c` Nextflow option can be used to provide any configuration _**except for parameters**_; see [docs](https://nf-co.re/docs/running/run-pipelines#using-parameter-files).
 

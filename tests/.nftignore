@@ -10,4 +10,5 @@ QC/multiqc_report.html
 pipeline_info/*.{html,json,txt,yml}
 vcf/*.vcf.{gz,gz.tbi}
 vcf/gatk4_haplo/*.vcf.{gz,gz.tbi}
+unfiltered_bams/*
 QC/umitools/*.log
