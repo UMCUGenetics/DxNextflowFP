@@ -23,17 +23,17 @@
                     },
                     "fastqc": {
                         "branch": "master",
-                        "git_sha": "6d46786420b4d7bc88eba026eb389c0c5535d120",
+                        "git_sha": "18eb358065b06f2d3419e37383b002fe7db3da02",
                         "installed_by": ["modules"]
                     },
                     "gatk4/genotypegvcfs": {
                         "branch": "master",
-                        "git_sha": "d5de7a949aa84689f4098c958f05733a6c3804f5",
+                        "git_sha": "b2bcd8312599aacd849e69721e20ac8138018f83",
                         "installed_by": ["bam_variantcalling_intervals"]
                     },
                     "gatk4/haplotypecaller": {
                         "branch": "master",
-                        "git_sha": "d5de7a949aa84689f4098c958f05733a6c3804f5",
+                        "git_sha": "b2bcd8312599aacd849e69721e20ac8138018f83",
                         "installed_by": ["bam_variantcalling_intervals"]
                     },
                     "multiqc": {
@@ -58,7 +58,7 @@
                     },
                     "samtools/merge": {
                         "branch": "master",
-                        "git_sha": "8fd5fe1c1e410ea530995d243bf49cd91e401d87",
+                        "git_sha": "972faf6f783fe9685267220965a91690741465f9",
                         "installed_by": ["modules"]
                     },
                     "samtools/stats": {
