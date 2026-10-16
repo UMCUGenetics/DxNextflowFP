@@ -64,4 +64,22 @@ lint:
     - process.memory
     - process.time
     - custom_config
+nf_core_version: 4.1.0
 repository_type: pipeline
+template:
+  author: UMCUGenetics
+  description: DxNextflowFP
+  force: false
+  is_nfcore: false
+  name: DxNextflowFP
+  org: UMCUGenetics
+  outdir: .
+  skip_features:
+    - igenomes
+    - gitpod
+    - codespaces
+    - fastqc
+    - adaptivecard
+    - slackreport
+    - seqera_platform
+  version: 1.0.0dev

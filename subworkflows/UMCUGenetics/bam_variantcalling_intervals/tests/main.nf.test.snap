@@ -1,0 +1,22 @@
+{
+    "Validate BAM_VARIANTCALLING_INTERVALS subworkflow - bam": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "sample1"
+                    },
+                    "sample1.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                ]
+            ],
+            [
+                "sample1.vcf.gz.tbi"
+            ]
+        ],
+        "timestamp": "2026-09-21T15:43:28.671928",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.4"
+        }
+    }
+}
