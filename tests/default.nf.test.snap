@@ -135,12 +135,6 @@
                 "vcf/gatk4_haplo/dup2-2800M.g.vcf.gz.tbi"
             ],
             [
-                "YSTR-2800M_FastQ_S01_L001_1_fastqc.html:md5,672d5f62b64b14dae79163ff2bc79b68",
-                "YSTR-2800M_FastQ_S01_L001_2_fastqc.html:md5,13a5720093fbe595a531c5d1eaa8c2f4",
-                "YSTR-2800M_FastQ_S01_L002_1_fastqc.html:md5,594502a290b7776f1b2423d0ccd8d269",
-                "YSTR-2800M_FastQ_S01_L002_2_fastqc.html:md5,f69bbc2bf066a3f0107dc00800b7c9b6",
-                "dup2-2800M_FastQ_S02_L001_1_fastqc.html:md5,e59ec5ab4be142f01115df339f354058",
-                "dup2-2800M_FastQ_S02_L001_2_fastqc.html:md5,8caf90b6f4513d1e23dfdf9011f6123c",
                 "fastqc-status-check-heatmap.txt:md5,a8c8886da7842ed36344aac12787cedb",
                 "fastqc_adapter_content_plot.txt:md5,37a97344cda7daa90e158f3795a26368",
                 "fastqc_overrepresented_sequences_plot.txt:md5,ffba06efab5fedd428e98580643da6fe",
@@ -251,7 +245,7 @@
                 }
             ]
         ],
-        "timestamp": "2026-10-09T17:08:39.222812",
+        "timestamp": "2026-10-16T09:12:24.556167",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.6"

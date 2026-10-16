@@ -70,7 +70,8 @@ workflow DXNEXTFLOWFP {
         // Remove lane info. Not required anymore for downstream analyses.
         .map{ meta, bam, bai -> [ [id: meta.name], bam, bai ] }
         .groupTuple()
-        .map{ meta, bam, bai -> [meta, bam.sort { a, b -> a.name <=> b.name  }, bai.sort { a, b -> a.name <=> b.name  }]}
+        // Sort bam and bai files to ensure that merging order is always identical.
+        .map{ meta, bam, bai -> [meta, bam.sort { left, right -> left.name <=> right.name  }, bai.sort { left, right -> left.name <=> right.name  }]}
     // Combine reference fasta and fai into value channel for merging process.
     ch_ref_index = Channel.value([
         [id: 'genome'],

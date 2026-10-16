@@ -12,3 +12,4 @@ vcf/*.vcf.{gz,gz.tbi}
 vcf/gatk4_haplo/*.vcf.{gz,gz.tbi}
 unfiltered_bams/*
 QC/umitools/*.log
+QC/fastqc/*.html
