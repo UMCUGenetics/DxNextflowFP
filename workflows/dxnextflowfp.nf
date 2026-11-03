@@ -44,13 +44,13 @@ workflow DXNEXTFLOWFP {
     def ch_versions         = channel.empty() // MultiQC
     def ch_multiqc_files    = channel.empty()
 
-    ch_genome_fasta         = Channel.value(file("${params.genome_fasta}")).map(createMetaWithIdSimpleName)
-    ch_genome_fasta_index   = Channel.value(file("${params.genome_fasta}.fai")).map(createMetaWithIdSimpleName)
-    ch_genome_dict          = Channel.value(file("${params.genome_dict}")).map(createMetaWithIdSimpleName)
-    ch_bwa_index            = Channel.fromPath("${params.bwa_index}*").map{ file -> [file.getSimpleName(), file] }.groupTuple().collect()
-    ch_dbsnp                = Channel.value(file("${params.dbsnp}")).map(createMetaWithIdSimpleName)
-    ch_dbsnp_index          = Channel.value(file("${params.dbsnp}.tbi")).map(createMetaWithIdSimpleName)
-    ch_intervals            = Channel.value(file("${params.intervals}")).map(createMetaWithIdSimpleName)
+    ch_genome_fasta         = channel.value(file("${params.genome_fasta}")).map(createMetaWithIdSimpleName)
+    ch_genome_fasta_index   = channel.value(file("${params.genome_fasta}.fai")).map(createMetaWithIdSimpleName)
+    ch_genome_dict          = channel.value(file("${params.genome_dict}")).map(createMetaWithIdSimpleName)
+    ch_bwa_index            = channel.fromPath("${params.bwa_index}*").map{ file -> [file.getSimpleName(), file] }.groupTuple().collect()
+    ch_dbsnp                = channel.value(file("${params.dbsnp}")).map(createMetaWithIdSimpleName)
+    ch_dbsnp_index          = channel.value(file("${params.dbsnp}.tbi")).map(createMetaWithIdSimpleName)
+    ch_intervals            = channel.value(file("${params.intervals}")).map(createMetaWithIdSimpleName)
 
     val_umi_dedup           = params.val_umi_dedup
     
@@ -72,13 +72,13 @@ workflow DXNEXTFLOWFP {
         .groupTuple()
         // Sort bam and bai files to ensure that merging order is always identical.
         .map{ meta, bam, bai -> [meta, bam.sort { left, right -> left.name <=> right.name  }, bai.sort { left, right -> left.name <=> right.name  }]}
-    // Combine reference fasta and fai into value channel for merging process.
-    ch_ref_index = Channel.value([
-        [id: 'genome'],
-        file(params.genome_fasta),
-        file("${params.genome_fasta}.fai"),
-        []
-    ])
+    
+    // Join fasta and fai. Add empty list to match the input signature of SAMTOOLS_MERGE.
+    ch_ref_index = ch_genome_fasta
+        .join(ch_genome_fasta_index)
+        .map{ meta, fasta, fai -> [meta, fasta, fai, []] }
+        .first()
+
 
     SAMTOOLS_MERGE(ch_bam_bai, ch_ref_index, "bai")
 
