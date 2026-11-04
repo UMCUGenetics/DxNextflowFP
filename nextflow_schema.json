@@ -97,11 +97,13 @@
             "properties": {
                 "cluster_options": {
                     "type": "string",
-                    "default": "--mail-user null --mail-type FAIL --account=diaggen"
+                    "default": "--mail-user null --mail-type FAIL --account=diaggen",
+                    "description": "Options to configure SLURM, like email, account or license."
                 },
                 "cache_dir": {
                     "type": "string",
-                    "default": "/hpc/diaggen/data/databases/Nextflow_cache/DxNextflowFP/null/"
+                    "default": "/hpc/diaggen/data/databases/Nextflow_cache/DxNextflowFP/null/",
+                    "description": "Directory for caching."
                 }
             }
         },
