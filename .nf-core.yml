@@ -18,6 +18,7 @@ lint:
     - CITATIONS.md
     - conf/igenomes.config
     - conf/igenomes_ignored.config
+    - conf/test_full.config
     - docs/images/nf-core-dxnextflowfp_logo_light.png
     - docs/images/nf-core-dxnextflowfp_logo_dark.png
     - docs/output.md
