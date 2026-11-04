@@ -58,7 +58,7 @@ workflow PIPELINE_INITIALISATION {
         before_text = before_text.replaceAll(/\033\[[0-9;]*m/, '')
     }
 
-    command = "nextflow run ${workflow.manifest.name} -profile <docker/singularity/.../institute> --input samplesheet.csv --outdir <OUTDIR>"
+    command = "nextflow run ${workflow.manifest.name} -profile <docker/singularity/.../institute> --input_dir <FASTQ_DIR> --outdir <OUTDIR>"
 
     UTILS_NFSCHEMA_PLUGIN (
         workflow,
@@ -84,7 +84,11 @@ workflow PIPELINE_INITIALISATION {
     // Create channel from input file provided through params.input_dir
     //
 
+    // Fail fast with a clear error if the input directory does not exist
+    file(input_dir, checkIfExists: true)
+
     ch_sample_fastqs = channel.fromFilePairs("${input_dir}/*_R{1,2}_001.fastq.gz")
+        .ifEmpty { error("No fastq files found in '${input_dir}' matching '*_R{1,2}_001.fastq.gz'") }
         .map { fastq_name, fastq_file ->
             [[id: fastq_name, name: fastq_name.split('_')[0]], fastq_file ]
         }
