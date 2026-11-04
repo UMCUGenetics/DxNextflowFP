@@ -28,7 +28,14 @@ nextflow_pipeline {
             // A stub run only creates empty placeholder files,
             // so assert the published output tree (paths only, not contents)
             def stable_path = getAllFilesFromDir(params.outdir, relative: true, includeDir: true, ignore: ['pipeline_info/*.{html,json,txt}'])
-            assert snapshot(stable_path).match()
+            assertAll(
+                { assert snapshot(
+                    // pipeline versions.yml file for multiqc from which we remove the Nextflow version because we test pipelines on multiple Nextflow versions
+                    removeNextflowVersion("$outputDir/pipeline_info/dxnextflowfp_software_mqc_versions.yml"),
+                    // All stable path name, with a relative path
+                    stable_path
+                ).match() }
+            )
         }
     }
 }

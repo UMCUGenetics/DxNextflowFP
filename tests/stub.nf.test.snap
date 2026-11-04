@@ -1,6 +1,17 @@
 {
     "-profile test -stub-run": {
         "content": [
+            {
+                "FASTQC": {
+                    "fastqc": "0.13.0"
+                },
+                "TRIMGALORE": {
+                    "trimgalore": "2.3.0"
+                },
+                "Workflow": {
+                    "UMCUGenetics/dxnextflowfp": "v1.0.0dev"
+                }
+            },
             [
                 "QC",
                 "QC/fastqc",
@@ -26,7 +37,7 @@
                 "pipeline_info/dxnextflowfp_software_mqc_versions.yml"
             ]
         ],
-        "timestamp": "2026-11-04T20:36:37.469178",
+        "timestamp": "2026-11-04T20:49:11.082025",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.6"
