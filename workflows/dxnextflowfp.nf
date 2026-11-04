@@ -32,7 +32,6 @@ workflow DXNEXTFLOWFP {
     ch_fastq // channel: samplesheet read in from --input
     multiqc_config
     multiqc_logo
-    multiqc_methods_description
     outdir
 
     main:
@@ -155,10 +154,6 @@ workflow DXNEXTFLOWFP {
     def ch_summary_params = paramsSummaryMap(workflow, parameters_schema: "nextflow_schema.json")
     def ch_workflow_summary = channel.value(paramsSummaryMultiqc(ch_summary_params))
     ch_multiqc_files = ch_multiqc_files.mix(ch_workflow_summary.collectFile(name: 'workflow_summary_mqc.yaml'))
-    def ch_multiqc_custom_methods_description = multiqc_methods_description
-        ? file(multiqc_methods_description, checkIfExists: true)
-        : file("${projectDir}/assets/methods_description_template.yml", checkIfExists: true)
-
     MULTIQC(
         ch_multiqc_files.flatten().collect().map { files ->
             [

@@ -39,7 +39,6 @@ workflow UMCUGENETICS_DXNEXTFLOWFP {
         ch_sample_fastqs,
         params.multiqc_config,
         params.multiqc_logo,
-        params.multiqc_methods_description,
         params.outdir,
     )
     emit:
