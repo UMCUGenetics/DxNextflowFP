@@ -1,5 +1,5 @@
 {
-    "-profile test": {
+    "Test end to end run of the pipeline": {
         "content": [
             {
                 "BWAMEM2_MEM": {
