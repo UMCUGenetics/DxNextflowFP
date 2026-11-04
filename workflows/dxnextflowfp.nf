@@ -45,7 +45,7 @@ workflow DXNEXTFLOWFP {
     ch_genome_fasta         = channel.value(file("${params.genome_fasta}")).map(createMetaWithIdSimpleName)
     ch_genome_fasta_index   = channel.value(file("${params.genome_fasta}.fai")).map(createMetaWithIdSimpleName)
     ch_genome_dict          = channel.value(file("${params.genome_dict}")).map(createMetaWithIdSimpleName)
-    ch_bwa_index            = channel.fromPath("${params.bwa_index}*").map{ file -> [file.getSimpleName(), file] }.groupTuple().collect()
+    ch_bwa_index            = channel.fromPath("${params.bwa_index}*").collect().map { files -> [[id: 'bwa_index'], files] }
     ch_dbsnp                = channel.value(file("${params.dbsnp}")).map(createMetaWithIdSimpleName)
     ch_dbsnp_index          = channel.value(file("${params.dbsnp}.tbi")).map(createMetaWithIdSimpleName)
     ch_intervals            = channel.value(file("${params.intervals}")).map(createMetaWithIdSimpleName)
@@ -169,7 +169,7 @@ workflow DXNEXTFLOWFP {
     )
     emit:
     multiqc_report = MULTIQC.out.report.map { _meta, report -> [report] }.toList() // channel: /path/to/multiqc_report.html
-    versions       = ch_versions                                                   // channel: [ path(versions.yml) ]
+    versions       = ch_collated_versions                                                   // channel: [ path(versions.yml) ]
 }
 
 /*
