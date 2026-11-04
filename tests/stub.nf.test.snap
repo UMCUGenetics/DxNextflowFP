@@ -1,0 +1,45 @@
+{
+    "-profile test -stub-run": {
+        "content": [
+            [
+                "QC",
+                "QC/fastqc",
+                "QC/multiqc_data",
+                "QC/multiqc_data/.stub",
+                "QC/multiqc_plots",
+                "QC/multiqc_plots/.stub",
+                "QC/multiqc_report.html",
+                "QC/samtools",
+                "QC/samtools/stub.flagstat",
+                "QC/samtools/stub.idxstats",
+                "QC/samtools/stub.stats",
+                "QC/trimgalore",
+                "QC/trimgalore/stub_1.fastq.gz_trimming_report.json",
+                "QC/trimgalore/stub_1.fastq.gz_trimming_report.txt",
+                "QC/trimgalore/stub_2.fastq.gz_trimming_report.json",
+                "QC/trimgalore/stub_2.fastq.gz_trimming_report.txt",
+                "QC/umitools",
+                "QC/umitools/stub_dedup.log",
+                "QC/umitools/stub_dedup_edit_distance.tsv",
+                "QC/umitools/stub_dedup_per_position.tsv",
+                "QC/umitools/stub_dedup_per_umi.tsv",
+                "pipeline_info",
+                "pipeline_info/dxnextflowfp_software_mqc_versions.yml",
+                "unfiltered_bams",
+                "unfiltered_bams/stub_merge.bam",
+                "unfiltered_bams/stub_merge.bam.bai",
+                "vcf",
+                "vcf/gatk4_haplo",
+                "vcf/gatk4_haplo/stub.g.vcf.gz",
+                "vcf/gatk4_haplo/stub.g.vcf.gz.tbi",
+                "vcf/stub.vcf.gz",
+                "vcf/stub.vcf.gz.tbi"
+            ]
+        ],
+        "timestamp": "2026-11-04T15:56:50.718674",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
+    }
+}

@@ -1,0 +1,34 @@
+nextflow_pipeline {
+
+    name "Test pipeline stub run"
+    script "../main.nf"
+    tag "pipeline"
+    tag "stub"
+
+    test("-profile test -stub-run") {
+        // Run every process with its stub block instead of the real script
+        options "-stub-run"
+
+        when {
+            params {
+                outdir = "$outputDir"
+                // Do not use the test-data params from tests/nextflow.config:
+                // a stub run never reads the inputs, so point them at empty placeholder files
+                input_dir     = "reads"
+                genome_fasta  = "genome.fna"
+                genome_dict   = "genome.dict"
+                bwa_index     = "bwa/"
+                intervals     = "intervals.interval_list"
+                dbsnp         = "dbsnp.vcf.gz"
+            }
+        }
+
+        then {
+            assert workflow.success
+            // A stub run only creates empty placeholder files,
+            // so assert the published output tree (paths only, not contents)
+            def stable_path = getAllFilesFromDir(params.outdir, relative: true, includeDir: true, ignore: ['pipeline_info/*.{html,json,txt}'])
+            assert snapshot(stable_path).match()
+        }
+    }
+}
