@@ -15,7 +15,6 @@ include { BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS     } from '../subworkflows/nf-core/
 include { BAM_STATS_SAMTOOLS                    } from '../subworkflows/nf-core/bam_stats_samtools/main'
 include { BAM_VARIANTCALLING_INTERVALS          } from '../subworkflows/UMCUGenetics/bam_variantcalling_intervals/main'
 
-include { methodsDescriptionText                } from '../subworkflows/local/utils_nfcore_dxnextflowfp_pipeline'
 include { paramsSummaryMap                      } from 'plugin/nf-schema'
 include { paramsSummaryMultiqc                  } from '../subworkflows/nf-core/utils_nfcore_pipeline'
 include { softwareVersionsToYAML                } from '../subworkflows/nf-core/utils_nfcore_pipeline'
