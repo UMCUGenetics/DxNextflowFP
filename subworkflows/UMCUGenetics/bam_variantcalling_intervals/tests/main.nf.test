@@ -25,7 +25,7 @@ nextflow_workflow {
                 "gatk4/genotypegvcfs"
             ]
         )
-        //nfcoreLink("${launchDir}/library/", "${baseDir}/modules/")
+        nfcoreLink("${launchDir}/library/", "${baseDir}/modules/")
     }
 
 
@@ -72,7 +72,7 @@ nextflow_workflow {
             )
         }
         cleanup {
-            //nfcoreUnlink("${launchDir}/library/", "${baseDir}/modules/")
+            nfcoreUnlink("${launchDir}/library/", "${baseDir}/modules/")
         }
     }
 }
