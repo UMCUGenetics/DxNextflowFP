@@ -8,14 +8,16 @@
 [![run with docker](https://img.shields.io/badge/run%20with-docker-0db7ed?labelColor=000000&logo=docker)](https://www.docker.com/)
 [![run with singularity](https://img.shields.io/badge/run%20with-singularity-1d355c.svg?labelColor=000000)](https://sylabs.io/docs/)
 
-
-**UMCUGenetics/dxnextflowfp** 
+**UMCUGenetics/dxnextflowfp**
 
 Genome Diagnotics Nextflow Fingerprint. This workflow is used to perform alignment on the fingerprint data. These data are further processed by BAM_VARIANTCALLING_INTERVALS to create a vcf file for fingerprinting to detect swaps/contamination in samples.
 
 # Usage
+
 ## HPC
+
 On the HPC you can submit a pipeline run using the `run_dxnextflowfp.sh` script. This submits the pipeline in an sbatch and runs nextflow with a slurm profile.
+
 ```bash
 ./DxNextflowFP/run_dxnextflowfp.sh \
   --input fastq_dir/ \
@@ -25,7 +27,9 @@ On the HPC you can submit a pipeline run using the `run_dxnextflowfp.sh` script.
 ```
 
 ## Alternatively
+
 The pipeline can also be executed using a regular nextflow run command:
+
 ```bash
 nextflow run UMCUGenetics/dxnextflowfp \
    -profile <docker/singularity/.../institute> \
@@ -36,10 +40,13 @@ nextflow run UMCUGenetics/dxnextflowfp \
 ```
 
 # nf-test
+
 Test data is located on the hpc in folder:
+
 ```
 /hpc/diaggen/data/databases/testdata/DxNextflowFP/
 ```
+
 Data can be downloaded locally to run nf-tests. If locally downloaded, please update parameter: `pipelines_umcu_local_testdata_base_path`
 
 > [!WARNING]
@@ -50,4 +57,3 @@ Data can be downloaded locally to run nf-tests. If locally downloaded, please up
 An extensive list of references for the tools used by the pipeline can be found in the [`CITATIONS.md`](CITATIONS.md) file.
 
 This pipeline uses code and infrastructure developed and maintained by the [nf-core](https://nf-co.re) community, reused here under the [MIT license](https://github.com/nf-core/tools/blob/main/LICENSE).
-

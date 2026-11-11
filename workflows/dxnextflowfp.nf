@@ -51,7 +51,7 @@ workflow DXNEXTFLOWFP {
     ch_intervals            = channel.value(file("${params.intervals}")).map(createMetaWithIdSimpleName)
 
     val_umi_dedup           = params.val_umi_dedup
-    
+
     ///
     /// Workflow
     ///
@@ -61,7 +61,7 @@ workflow DXNEXTFLOWFP {
 
     BWAMEM2_MEM(TRIMGALORE.out.reads, ch_bwa_index, ch_genome_fasta, true)
     SAMTOOLS_INDEX(BWAMEM2_MEM.out.bam)
-    
+
     // Combine bam and bai for stats/dedup subworkflows.
     ch_bam_bai = BWAMEM2_MEM.out.bam
         .join(SAMTOOLS_INDEX.out.index)
@@ -70,7 +70,7 @@ workflow DXNEXTFLOWFP {
         .groupTuple()
         // Sort bam and bai files to ensure that merging order is always identical.
         .map{ meta, bam, bai -> [meta, bam.sort { left, right -> left.name <=> right.name  }, bai.sort { left, right -> left.name <=> right.name  }]}
-    
+
     // Join fasta and fai. Add empty list to match the input signature of SAMTOOLS_MERGE.
     ch_ref_index = ch_genome_fasta
         .join(ch_genome_fasta_index)
