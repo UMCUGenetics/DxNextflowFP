@@ -24,6 +24,7 @@ On the HPC you can submit a pipeline run using the `run_dxnextflowfp.sh` script.
   --outdir <path>   \
   --email <address> \
   [options]
+
 ```
 
 ## Alternatively
