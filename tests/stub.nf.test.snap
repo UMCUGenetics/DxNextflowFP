@@ -9,7 +9,7 @@
                     "trimgalore": "2.3.0"
                 },
                 "Workflow": {
-                    "UMCUGenetics/dxnextflowfp": "v1.0.0dev"
+                    "UMCUGenetics/dxnextflowfp": "v1.0.0"
                 }
             },
             [
