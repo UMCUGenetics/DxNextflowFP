@@ -61,4 +61,4 @@ template:
     - codespaces
     - fastqc
     - seqera_platform
-  version: 1.0.0dev
+  version: 1.0.0
