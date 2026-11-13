@@ -37,7 +37,7 @@
                     "umitools": "1.1.6"
                 },
                 "Workflow": {
-                    "UMCUGenetics/dxnextflowfp": "v1.0.0dev"
+                    "UMCUGenetics/dxnextflowfp": "v1.0.0"
                 }
             },
             [
