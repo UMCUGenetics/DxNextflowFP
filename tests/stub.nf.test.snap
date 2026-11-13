@@ -1,0 +1,46 @@
+{
+    "-profile test -stub-run": {
+        "content": [
+            {
+                "FASTQC": {
+                    "fastqc": "0.13.0"
+                },
+                "TRIMGALORE": {
+                    "trimgalore": "2.3.0"
+                },
+                "Workflow": {
+                    "UMCUGenetics/dxnextflowfp": "v1.0.0dev"
+                }
+            },
+            [
+                "QC",
+                "QC/fastqc",
+                "QC/multiqc_data",
+                "QC/multiqc_data/.stub",
+                "QC/multiqc_plots",
+                "QC/multiqc_plots/.stub",
+                "QC/multiqc_report.html",
+                "QC/trimgalore",
+                "QC/trimgalore/frac1-frac2_BC01_S01_L001_1.fastq.gz_trimming_report.json",
+                "QC/trimgalore/frac1-frac2_BC01_S01_L001_1.fastq.gz_trimming_report.txt",
+                "QC/trimgalore/frac1-frac2_BC01_S01_L001_2.fastq.gz_trimming_report.json",
+                "QC/trimgalore/frac1-frac2_BC01_S01_L001_2.fastq.gz_trimming_report.txt",
+                "QC/trimgalore/frac1-frac2_BC01_S01_L002_1.fastq.gz_trimming_report.json",
+                "QC/trimgalore/frac1-frac2_BC01_S01_L002_1.fastq.gz_trimming_report.txt",
+                "QC/trimgalore/frac1-frac2_BC01_S01_L002_2.fastq.gz_trimming_report.json",
+                "QC/trimgalore/frac1-frac2_BC01_S01_L002_2.fastq.gz_trimming_report.txt",
+                "QC/trimgalore/frac3-frac4_BC02_S02_L001_1.fastq.gz_trimming_report.json",
+                "QC/trimgalore/frac3-frac4_BC02_S02_L001_1.fastq.gz_trimming_report.txt",
+                "QC/trimgalore/frac3-frac4_BC02_S02_L001_2.fastq.gz_trimming_report.json",
+                "QC/trimgalore/frac3-frac4_BC02_S02_L001_2.fastq.gz_trimming_report.txt",
+                "pipeline_info",
+                "pipeline_info/dxnextflowfp_software_mqc_versions.yml"
+            ]
+        ],
+        "timestamp": "2026-11-04T20:49:11.082025",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
+    }
+}
