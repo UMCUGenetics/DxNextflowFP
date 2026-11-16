@@ -36,11 +36,11 @@ runs:
         install-pdiff: true
 
     - name: Setup apptainer
-      if: contains(inputs.profile, 'singularity')
+      if: contains(inputs.profile, 'test_singularity')
       uses: eWaterCycle/setup-apptainer@95b5c781df5f72fd2271cc3cff06904a09d2a087 # v3.0.0
 
     - name: Set up Singularity
-      if: contains(inputs.profile, 'singularity')
+      if: contains(inputs.profile, 'test_singularity')
       shell: bash
       run: |
         mkdir -p $NXF_SINGULARITY_CACHEDIR
