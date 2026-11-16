@@ -1,0 +1,64 @@
+lint:
+  container_configs: false
+  pipeline_name_conventions: false
+  files_exist:
+    - .github/CONTRIBUTING.md
+    - .github/ISSUE_TEMPLATE/bug_report.yml
+    - .github/ISSUE_TEMPLATE/config.yml
+    - .github/ISSUE_TEMPLATE/feature_request.yml
+    - .github/PULL_REQUEST_TEMPLATE.md
+    - .github/workflows/ci.yml
+    - .github/workflows/awstest.yml
+    - .github/workflows/awsfulltest.yml
+    - .github/workflows/branch.yml
+    - .github/workflows/linting_comment.yml
+    - assets/nf-core-dxnextflowfp_logo_light.png
+    - CODE_OF_CONDUCT.md
+    - CHANGELOG.md
+    - CITATIONS.md
+    - conf/igenomes.config
+    - conf/igenomes_ignored.config
+    - conf/test_full.config
+    - docs/images/nf-core-dxnextflowfp_logo_light.png
+    - docs/images/nf-core-dxnextflowfp_logo_dark.png
+    - docs/output.md
+    - docs/README.md
+    - docs/usage.md
+    - docs/CONTRIBUTING.md
+    - ro-crate-metadata.json
+  files_unchanged:
+    - .github/workflows/linting.yml
+    - .gitignore
+    - LICENSE
+  multiqc_config:
+    - report_comment
+  nextflow_config:
+    - dag.enabled
+    - dag.file
+    - manifest.name
+    - manifest.homePage
+    - params.outdir
+    - params.input
+    - params.validationShowHiddenParams
+    - params.validationSchemaIgnoreParams
+    - process.cpus
+    - process.memory
+    - process.time
+    - custom_config
+nf_core_version: 4.1.0
+repository_type: pipeline
+template:
+  author: UMCUGenetics
+  description: DxNextflowFP
+  force: false
+  is_nfcore: false
+  name: DxNextflowFP
+  org: UMCUGenetics
+  outdir: .
+  skip_features:
+    - changelog
+    - igenomes
+    - codespaces
+    - fastqc
+    - seqera_platform
+  version: 1.0.0
